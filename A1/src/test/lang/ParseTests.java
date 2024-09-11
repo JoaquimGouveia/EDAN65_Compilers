@@ -35,4 +35,8 @@ public class ParseTests {
         Util.testSyntaxError(TEST_DIRECTORY, "scanningError.in");
     }
 
+    @Test public void testInt() {
+        Util.testValidSyntax(TEST_DIRECTORY, "testInt.in");
+    }
+
 }
