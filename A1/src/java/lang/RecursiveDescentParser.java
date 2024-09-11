@@ -1,15 +1,6 @@
 package lang;
 
-import static lang.ast.LangParser.Terminals.ID;
-import static lang.ast.LangParser.Terminals.NUMERAL;
-import static lang.ast.LangParser.Terminals.THEN;
-import static lang.ast.LangParser.Terminals.ASSIGN;
-import static lang.ast.LangParser.Terminals.IF;
-import static lang.ast.LangParser.Terminals.FI;
-import static lang.ast.LangParser.Terminals.FOR;
-import static lang.ast.LangParser.Terminals.OD;
-import static lang.ast.LangParser.Terminals.DO;
-import static lang.ast.LangParser.Terminals.UNTIL;
+import static lang.ast.LangParser.Terminals.*;
 
 
 public class RecursiveDescentParser extends RDPTemplate {
@@ -45,6 +36,7 @@ public class RecursiveDescentParser extends RDPTemplate {
         switch(peek()){
             case ID: accept(ID); break;
             case NUMERAL: accept(NUMERAL); break;
+            case NOT: accept(NOT); expr(); break;
             default: error("error, found "+ peek());
         }
     }
