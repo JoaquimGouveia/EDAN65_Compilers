@@ -1,8 +1,12 @@
 package lang;
 
-import static lang.ast.LangParser.Terminals.ASSIGN;
 import static lang.ast.LangParser.Terminals.ID;
 import static lang.ast.LangParser.Terminals.NUMERAL;
+import static lang.ast.LangParser.Terminals.THEN;
+import static lang.ast.LangParser.Terminals.ASSIGN;
+import static lang.ast.LangParser.Terminals.IF;
+import static lang.ast.LangParser.Terminals.FI;
+
 
 public class RecursiveDescentParser extends RDPTemplate {
 
@@ -15,7 +19,7 @@ public class RecursiveDescentParser extends RDPTemplate {
     private void statement(){
         switch(peek()) { //fungerar peak? 
             case ID: assignment(); break;
-            // case 
+            case IF: ifStmt(); break;
             // case 
             default: error("Expecting statement, found "+ peek());
         }
@@ -23,6 +27,10 @@ public class RecursiveDescentParser extends RDPTemplate {
 
     private void assignment(){
         accept(ID);accept(ASSIGN);expr(); //maybe+ accept(SEMICOLON);
+    }
+
+    private void ifStmt(){
+        accept(IF); expr(); accept(THEN); statement(); accept(FI); //maybe+ accept(SEMICOLON);
     }
 
     private void expr(){
