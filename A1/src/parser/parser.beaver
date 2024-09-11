@@ -9,13 +9,16 @@
     }
 :};
 
-%terminals LET, IN, END, ASSIGN, MUL, ID, NUMERAL;
+%terminals FOR, UNTIL, DO, OD, IF, FI, THEN, IN, ASSIGN, NOT, ID, NUMERAL;
 
 %goal program;
 
-program = exp;
-exp = factor | exp MUL factor;
-factor = let | numeral | id;
-let = LET id ASSIGN exp IN exp END;
+program = stmt;
+stmt = forStmt | ifStmt | assignment;
+forStmt = FOR ID ASSIGN expr UNTIL expr DO stmt OD;
+ifStmt = IF expr THEN stmt FI;
+assignment =  ID ASSIGN expr;
+expr = ID | NUMERAL | NOT expr;
 numeral = NUMERAL;
 id = ID;
+
