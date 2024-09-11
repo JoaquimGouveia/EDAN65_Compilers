@@ -23,5 +23,12 @@ public class ParseTests {
     @Test public void testFor() {
         Util.testValidSyntax(TEST_DIRECTORY, "testFor.in");}
 
+    @Test public void testAllConstructors() {
+        Util.testValidSyntax(TEST_DIRECTORY, "allConstructors.in");
+    }
+
+    @Test public void testParsingError() {
+        Util.testSyntaxError(TEST_DIRECTORY, "parsingError.in");
+    }
 
 }
