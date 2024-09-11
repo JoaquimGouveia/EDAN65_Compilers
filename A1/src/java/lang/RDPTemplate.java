@@ -12,6 +12,10 @@ public abstract class RDPTemplate {
     private LangScanner scanner;
     private beaver.Symbol currentToken;
 
+    private beaver.Symbol getCurrentToken(){
+        return currentToken; 
+    }
+
     /** Initialize the parser and start parsing via the parseProgram() method. */
     public void parse(LangScanner scanner) {
         this.scanner = scanner;
