@@ -6,6 +6,10 @@ import static lang.ast.LangParser.Terminals.THEN;
 import static lang.ast.LangParser.Terminals.ASSIGN;
 import static lang.ast.LangParser.Terminals.IF;
 import static lang.ast.LangParser.Terminals.FI;
+import static lang.ast.LangParser.Terminals.FOR;
+import static lang.ast.LangParser.Terminals.OD;
+import static lang.ast.LangParser.Terminals.DO;
+import static lang.ast.LangParser.Terminals.UNTIL;
 
 
 public class RecursiveDescentParser extends RDPTemplate {
@@ -20,7 +24,7 @@ public class RecursiveDescentParser extends RDPTemplate {
         switch(peek()) { //fungerar peak? 
             case ID: assignment(); break;
             case IF: ifStmt(); break;
-            // case 
+            case FOR: forStmt(); break;
             default: error("Expecting statement, found "+ peek());
         }
     }
@@ -33,6 +37,10 @@ public class RecursiveDescentParser extends RDPTemplate {
         accept(IF); expr(); accept(THEN); statement(); accept(FI); //maybe+ accept(SEMICOLON);
     }
 
+    private void forStmt() {
+        accept(FOR); accept(ID); accept(ASSIGN); expr(); accept(UNTIL); expr(); accept(DO); statement(); accept(OD); //maybe+ accept(SEMICOLON);
+    }
+
     private void expr(){
         switch(peek()){
             case ID: accept(ID); break;
@@ -40,5 +48,4 @@ public class RecursiveDescentParser extends RDPTemplate {
             default: error("error, found "+ peek());
         }
     }
-    
 }
