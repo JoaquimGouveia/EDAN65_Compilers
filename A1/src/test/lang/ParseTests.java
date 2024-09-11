@@ -16,9 +16,12 @@ public class ParseTests {
         Util.testValidSyntax(TEST_DIRECTORY, "assign.in");
     }
 
-    @Test public void testif() {
-        Util.testValidSyntax(TEST_DIRECTORY, "testif.in");
+    @Test public void testIf() {
+        Util.testValidSyntax(TEST_DIRECTORY, "testIf.in");
     }
+
+    @Test public void testFor() {
+        Util.testValidSyntax(TEST_DIRECTORY, "testFor.in");}
 
 
 }

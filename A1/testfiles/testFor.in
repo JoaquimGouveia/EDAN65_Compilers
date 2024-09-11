@@ -1,0 +1,2 @@
+for a = 2.0 until 6.0 do
+    c = 3.0 od
