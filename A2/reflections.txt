@@ -1,7 +1,89 @@
-Similarities: Hyfsat lika struktur och production rules (exp har exempelvis exakt samma regel), both have the same terminals (but the Abstract grammar has some extra)
+Similarities: They contain a lot of the same non-terminals, at the same time the CFG has some 
+non-terminals that the abstarct grammar does not, ex: factor and binding_list.
 
-Differences: The abstract grammar includes explicit AST node construction => Each production rule ends with some kind of  object creation.
-The abstract grammar, as described in the assignment, 
-also introduces new language features such as ask and user. There is also some kind of suffix (ex: .a and .b) after some tokens
+Differences: Syntax differences at least in the way we represent Optionals. The abstract grammar
+introduces a kind of hierarchy when defining abstract classes as well as concrete classes of this type
+A lot less rules in the abstract grammar. In the CFG there are also java constructors specifying what objects to build
+for each production rule. The CFG rules are defined as a non-terminal being assigned some values 
+while the Abstract grammar mostly relates to children (::=)
 
 
+What would be examples of other well-formed ASTs for the P ::= A [B] C* class? What would be
+examples of ill-formed ASTs?
+A: For example this would work:
+
+             P
+        _____|______
+        |    |     |
+        A   Opt   List -- C
+
+Look at the parser specification (src/parser/parser.beaver) and make sure you understand how the
+AST is built. Where are the semantic actions? How are optionals and lists handled?
+A: The semantic actions can be found within the brackets after each production rule in the 
+parser specification. The optional can be found in the rule for the Ask non terminal while the list
+is found in the let non terminal production rule. They are handled exactly like described in the assignment.
+
+
+Try out compiler.jar on one of the test programs. For example:
+Program                                                                                                                               
+  Let
+    List
+      Binding
+        IdDecl ID="radius"
+        Ask
+          Opt
+            Numeral NUMERAL="1.0"
+      Binding
+        IdDecl ID="pi"
+        Numeral NUMERAL="3.14"
+    Mul
+      Mul
+        Numeral NUMERAL="2.0"
+        IdUse ID="pi"
+      IdUse ID="radius"
+
+Rerun the build (./gradlew test) to see how Beaver handles this problem. Remember to “refresh” your
+Eclipse project (if using Eclipse).
+A: WARNING: resolved SHIFT/REDUCE conflict on [MUL] by selecting SHIFT:
+  REDUCE exp = exp MUL exp
+  SHIFT MUL
+Context:
+  exp = exp . MUL exp [RBRACKET]
+  exp = exp . MUL exp [EOF]
+  exp = exp MUL exp . [MUL]
+  exp = exp . MUL exp [MUL]
+  exp = exp . MUL exp [END]
+  exp = exp . MUL exp [IN]
+  exp = exp . MUL exp [EOF]
+  exp = exp MUL exp . [MUL]
+  exp = exp . MUL exp [MUL]
+  exp = exp . MUL exp [END]
+  exp = exp . MUL exp [IN]
+  exp = exp . MUL exp [ID]
+  exp = exp . MUL exp [END]
+  exp = exp . MUL exp [IN]
+  exp = exp . MUL exp [ID]
+  exp = exp . MUL exp [ID]
+
+Experiment with this problem by adding an extra | to the binding_list production in the .beaver file
+to get an empty production. Rebuild, and confirm that there is now a shift-reduce conflict. Do all the
+tests still pass? If so, why?
+A: All tests still pass. I believe it might be due to the fact that none of the tests cover the binding list
+non-terminal production rule. ??
+
+WARNING: resolved SHIFT/REDUCE conflict on [ID] by selecting SHIFT:
+  REDUCE binding_list =
+  SHIFT ID
+Context:
+  id_decl = . ID [ASSIGN]
+  binding_list = . [ID]
+
+▶ Replace the let rule in the Beaver specification by the one shown above (without semantic action or variables). Confirm that you get a class cast exception when you run the compiler on testfiles/ast/let.in.
+A: Yes, get a ClassCastException: Exception in thread "main" java.lang.ClassCastException: class java.lang.String cannot be cast to class lang.ast.Expr (java.lang.String is in module java.base of loader 'bootstrap'; lang.ast.Expr is in unnamed module of loader 'app')
+        at lang.ast.LangParser$2.reduce(LangParser.java:60)
+        at lang.ast.LangParser.invokeReduceAction(LangParser.java:154)
+        at beaver.Parser.reduce(Parser.java:561)
+        at beaver.Parser.parse(Parser.java:468)
+        at beaver.Parser.parse(Parser.java:428)
+        at lang.Compiler.parse(Compiler.java:28)
+        at lang.Compiler.main(Compiler.java:41)
