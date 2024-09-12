@@ -29,6 +29,8 @@ import lang.ast.LangParser.SyntaxError;
 // macros
 WhiteSpace = [ ] | \t | \f | \n | \r
 ID = [a-zA-Z]+
+NUMERAL = [0-9]+ ("." [0-9]+)? // Maybe just [0-9]+ since they are supposed to be only integer typed
+
 
 %%
 
@@ -36,7 +38,28 @@ ID = [a-zA-Z]+
 {WhiteSpace}  { }
 
 // token definitions
+"if"          { return sym(Terminals.IF); }
+"+"           { return sym(Terminals.PLUS); }
+"-"           { return sym(Terminals.MINUS); }
+"*"           { return sym(Terminals.MUL); }
+"/"           { return sym(Terminals.DIV); }
+"%"           { return sym(Terminals.MOD); }
+"=="          { return sym(Terminals.EQ); }
+"!="          { return sym(Terminals.NE); }
+"<"           { return sym(Terminals.LT); }
+"<="          { return sym(Terminals.LE); }
+">"           { return sym(Terminals.GT); }
+">="          { return sym(Terminals.GE); }
+"("           { return sym(Terminals.LPAREN); }
+")"           { return sym(Terminals.RPAREN); }
+"{"           { return sym(Terminals.LBRACE); }
+"}"           { return sym(Terminals.RBRACE); }
+";"           { return sym(Terminals.SEMICOLON); }
+"="           { return sym(Terminals.ASSIGN); }
+"while"       { return sym(Terminals.WHILE); }
+"return"      { return sym(Terminals.RETURN); }
 {ID}          { return sym(Terminals.ID); }
+{NUMERAL}     { return sym(Terminals.NUMERAL); }
 <<EOF>>       { return sym(Terminals.EOF); }
 
 /* error fallback */
