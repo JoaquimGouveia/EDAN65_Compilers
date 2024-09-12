@@ -1,0 +1,7 @@
+Similarities: Hyfsat lika struktur och production rules (exp har exempelvis exakt samma regel), both have the same terminals (but the Abstract grammar has some extra)
+
+Differences: The abstract grammar includes explicit AST node construction => Each production rule ends with some kind of  object creation.
+The abstract grammar, as described in the assignment, 
+also introduces new language features such as ask and user. There is also some kind of suffix (ex: .a and .b) after some tokens
+
+
