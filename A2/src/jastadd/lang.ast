@@ -1,1 +1,7 @@
-Program ::= <ID>;
+Program ::= FunctionDeclStmt*;
+
+abstract Statement;
+FunctionDeclStmt : Statement ::= ReturnType IdDecl <LPAREN> <RPAREN> FunctionBody;
+ReturnType ::= <ID>;
+IdDecl ::= <ID>;
+FunctionBody ::= <LBRACE> <RBRACE>;

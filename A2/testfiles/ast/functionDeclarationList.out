@@ -1,0 +1,10 @@
+Program
+  List
+    FunctionDeclStmt LPAREN="(" RPAREN=")"
+      ReturnType ID="int"
+      IdDecl ID="a"
+      FunctionBody LBRACE="{" RBRACE="}"
+    FunctionDeclStmt LPAREN="(" RPAREN=")"
+      ReturnType ID="int"
+      IdDecl ID="b"
+      FunctionBody LBRACE="{" RBRACE="}"

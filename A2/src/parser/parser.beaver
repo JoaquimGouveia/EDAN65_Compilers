@@ -9,10 +9,24 @@
     }
 :};
 
-%terminals ID;
+%terminals ID, IF, PLUS, MINUS, MUL, DIV, MOD, EQ, NE, LT, LE, GT, GE, LPAREN, RPAREN, LBRACE, RBRACE, SEMICOLON, COMMA, ASSIGN, WHILE, RETURN, NUMERAL;
 
 %typeof program = "Program";
+%typeof function_decl_stmt_list = "List";
+%typeof function_decl_stmt = "FunctionDeclStmt";
+%typeof function_body = "FunctionBody";
+%typeof return_type = "ReturnType";
+%typeof id_decl = "IdDecl";
 
 %goal program;
 
-program = ID.id {: return new Program(id); :} ;
+program = function_decl_stmt_list.a {: return new Program(a); :};
+
+function_decl_stmt_list = function_decl_stmt.a {: return new List().add(a); :}
+                        | function_decl_stmt_list.a function_decl_stmt.b {: return a.add(b); :}
+                        ;
+
+function_decl_stmt = return_type.a id_decl.b LPAREN.c RPAREN.d function_body.e {: return new FunctionDeclStmt(a,b,c,d,e); :};
+function_body = LBRACE.lb RBRACE.rb {: return new FunctionBody(lb, rb); :};
+return_type = ID.id {: return new ReturnType(id); :};
+id_decl = ID.id {: return new IdDecl(id); :};

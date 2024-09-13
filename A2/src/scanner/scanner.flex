@@ -55,6 +55,7 @@ NUMERAL = [0-9]+ ("." [0-9]+)? // Maybe just [0-9]+ since they are supposed to b
 "{"           { return sym(Terminals.LBRACE); }
 "}"           { return sym(Terminals.RBRACE); }
 ";"           { return sym(Terminals.SEMICOLON); }
+","           { return sym(Terminals.COMMA); }
 "="           { return sym(Terminals.ASSIGN); }
 "while"       { return sym(Terminals.WHILE); }
 "return"      { return sym(Terminals.RETURN); }
