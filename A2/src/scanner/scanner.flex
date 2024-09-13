@@ -39,6 +39,7 @@ NUMERAL = [0-9]+ ("." [0-9]+)? // Maybe just [0-9]+ since they are supposed to b
 
 // token definitions
 "if"          { return sym(Terminals.IF); }
+"int"         { return sym(Terminals.INT); }
 "+"           { return sym(Terminals.PLUS); }
 "-"           { return sym(Terminals.MINUS); }
 "*"           { return sym(Terminals.MUL); }

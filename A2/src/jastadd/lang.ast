@@ -1,7 +1,5 @@
-Program ::= FunctionDeclStmt*;
+Program ::= FuncDecl*;
 
-abstract Statement;
-FunctionDeclStmt : Statement ::= ReturnType IdDecl <LPAREN> <RPAREN> FunctionBody;
-ReturnType ::= <ID>;
+FuncDecl ::= <INT> IdDecl <LPAREN> <RPAREN> FuncBody;
+FuncBody ::= <LBRACE> <RBRACE>;
 IdDecl ::= <ID>;
-FunctionBody ::= <LBRACE> <RBRACE>;
