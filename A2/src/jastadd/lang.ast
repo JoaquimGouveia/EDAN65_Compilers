@@ -11,6 +11,7 @@ VarAssignStmt : Stmt ::= IdUse:Expr Numeral:Expr;
 FunctionCallStmt: Stmt ::= FunctionCall:Expr;
 ReturnStmt: Stmt ::= Expr;
 WhileStmt: Stmt ::= Expr Block;
+IfStmt: Stmt ::= Expr ThenBlock:Block [ElseBlock:Block];
 
 abstract Expr;
 FunctionCall : Expr ::= IdUse:Expr Expr*;
@@ -28,6 +29,7 @@ Mod : BinOp;
 Le : BinOp;
 Ge : BinOp;
 
+Neg : Expr ::= Expr;
 Numeral : Expr ::= <NUMERAL>;
 IdUse : Expr ::= <ID>; 
 

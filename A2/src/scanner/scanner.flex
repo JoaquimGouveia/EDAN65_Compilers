@@ -28,7 +28,8 @@ import lang.ast.LangParser.SyntaxError;
 
 // macros
 WhiteSpace = [ ] | \t | \f | \n | \r
-ID = [a-zA-Z]+
+Comment = "//" [^\n]*
+ID = [a-zA-Z]+ [a-zA-Z0-9]*
 NUMERAL = [0-9]+ ("." [0-9]+)? // Maybe just [0-9]+ since they are supposed to be only integer typed
 
 
@@ -36,6 +37,7 @@ NUMERAL = [0-9]+ ("." [0-9]+)? // Maybe just [0-9]+ since they are supposed to b
 
 // discard whitespace information
 {WhiteSpace}  { }
+{Comment}     { }
 
 // token definitions
 "if"          { return sym(Terminals.IF); }
@@ -58,6 +60,7 @@ NUMERAL = [0-9]+ ("." [0-9]+)? // Maybe just [0-9]+ since they are supposed to b
 ";"           { return sym(Terminals.SEMICOLON); }
 ","           { return sym(Terminals.COMMA); }
 "="           { return sym(Terminals.ASSIGN); }
+"else"        { return sym(Terminals.ELSE); }
 "while"       { return sym(Terminals.WHILE); }
 "return"      { return sym(Terminals.RETURN); }
 {ID}          { return sym(Terminals.ID); }

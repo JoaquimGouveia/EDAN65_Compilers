@@ -9,7 +9,7 @@
     }
 :};
 
-%terminals ID, INT, IF, ADD, SUB, MUL, DIV, MOD, EQ, NEQ, LT, LE, GT, GE, LPAREN, RPAREN, LBRACE, RBRACE, SEMICOLON, COMMA, ASSIGN, WHILE, RETURN, NUMERAL;
+%terminals ID, INT, IF, ELSE, ADD, SUB, MUL, DIV, MOD, EQ, NEQ, LT, LE, GT, GE, LPAREN, RPAREN, LBRACE, RBRACE, SEMICOLON, COMMA, ASSIGN, WHILE, RETURN, NUMERAL;
 
 %typeof program = "Program";
 %typeof func_decl_list = "List";
@@ -35,6 +35,7 @@
 %typeof opt_param_list = "List";
 %typeof return_stmt = "ReturnStmt";
 %typeof while_stmt = "WhileStmt";
+%typeof if_stmt = "IfStmt";
 
 %goal program;
 
@@ -73,7 +74,12 @@ stmt = var_decl_stmt.a {: return a; :}
         | func_call_stmt.a {: return a; :}
         | return_stmt.a {: return a; :}
         | while_stmt.a {: return a; :}
+        | if_stmt.a {: return a; :}
         ;
+
+if_stmt = IF LPAREN expr.a RPAREN block.b {: return new IfStmt(a, b, new Opt()); :}
+            | IF LPAREN expr.a RPAREN block.b ELSE block.c {: return new IfStmt(a, b, new Opt(c)); :}
+            ;
 
 return_stmt = RETURN expr.a SEMICOLON {: return new ReturnStmt(a); :};
 
@@ -120,6 +126,7 @@ factor = numeral
         | id_use
         | LPAREN expr.a RPAREN {: return a; :}
         | func_call.a {: return a; :}
+        | SUB factor.a {: return new Neg(a); :}
         ;
 
 func_call = id_use.a LPAREN opt_arg_list.b RPAREN {: return new FunctionCall(a, b); :};
