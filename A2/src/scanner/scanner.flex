@@ -31,13 +31,14 @@ WhiteSpace = [ ] | \t | \f | \n | \r
 Comment = "//" [^\n]*
 ID = [a-zA-Z]+ [a-zA-Z0-9]*
 NUMERAL = [0-9]+ ("." [0-9]+)? // Maybe just [0-9]+ since they are supposed to be only integer typed
-
+MultileComment = "/*" ([^\*]|\*[^/])* "*/"
 
 %%
 
 // discard whitespace information
 {WhiteSpace}  { }
 {Comment}     { }
+{MultileComment} { }
 
 // token definitions
 "if"          { return sym(Terminals.IF); }

@@ -52,6 +52,10 @@ public class ParseTests {
         Util.testValidSyntax(TEST_DIRECTORY, "comment.in");
     }
 
+    @Test public void notTypeCorrect() {
+        Util.testValidSyntax(TEST_DIRECTORY, "notTypeCorrect.in");
+    }
+
     @Test
     public void error() {
         Util.testSyntaxError(TEST_DIRECTORY, "error.in");
