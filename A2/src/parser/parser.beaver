@@ -14,16 +14,52 @@
 %typeof program = "Program";
 %typeof func_decl_list = "List";
 %typeof func_decl = "FuncDecl";
-%typeof func_body = "FuncBody";
+%typeof block = "Block";
 %typeof id_decl = "IdDecl";
+%typeof id_use = "IdUse";
+%typeof stmt_list = "List";
+%typeof stmt = "Stmt";
+%typeof var_decl_stmt = "VarDeclStmt";
+%typeof var_assign_stmt = "VarAssignStmt";
+%typeof opt_stmt_list = "List";
+%typeof expr = "Expr";
 
 %goal program;
 
 program = func_decl_list.a {: return new Program(a); :};
 
+expr = factor;
+
+factor = numeral
+        |id_use
+        ;
+
 func_decl_list = func_decl.a {: return new List().add(a); :}
                 | func_decl_list.a func_decl.b {: return a.add(b); :}
                 ;
-func_decl = INT.a id_decl.b LPAREN.c RPAREN.d func_body.e {: return new FuncDecl(a,b,c,d,e); :};
-func_body = LBRACE.a RBRACE.b {: return new FuncBody(a, b); :};
+func_decl = INT id_decl.b LPAREN RPAREN block.c {: return new FuncDecl(b,c); :};
+block = LBRACE opt_stmt_list.a RBRACE {: return new Block(a); :};
+
+opt_stmt_list =
+	        stmt_list.l {: return l; :}
+	        |	{: return new List(); :}
+            ;
+
+stmt_list = 
+            stmt.a {: return new List().add(a); :}
+            | stmt_list.a stmt.b {: return a.add(b); :}
+            ;
+
+stmt = var_decl_stmt.a {: return a; :}
+        | var_assign_stmt.a {: return a; :}
+        ;
+
+var_decl_stmt = INT id_decl.b SEMICOLON {: return new VarDeclStmt(b, new Opt()); :}
+                | INT id_decl.b ASSIGN expr.d SEMICOLON {: return new VarDeclStmt(b, new Opt(d)); :}
+                ;
+
+var_assign_stmt = id_use.a ASSIGN expr.b SEMICOLON {: return new VarAssignStmt(a, b); :};
+
 id_decl = ID.id {: return new IdDecl(id); :};
+id_use = ID.id {: return new IdUse(id); :};
+numeral = NUMERAL.num {: return new Numeral(num); :} ;

@@ -1,5 +1,15 @@
 Program ::= FuncDecl*;
 
-FuncDecl ::= <INT> IdDecl <LPAREN> <RPAREN> FuncBody;
-FuncBody ::= <LBRACE> <RBRACE>;
+FuncDecl ::= IdDecl Block;
+Block ::= Stmt*;
 IdDecl ::= <ID>;
+
+abstract Stmt;
+VarDeclStmt : Stmt ::= IdDecl [Expr];
+VarAssignStmt : Stmt ::= IdUse:Expr Numeral:Expr;
+
+
+abstract Expr;
+Numeral : Expr ::= <NUMERAL>;
+IdUse : Expr ::= <ID>; 
+

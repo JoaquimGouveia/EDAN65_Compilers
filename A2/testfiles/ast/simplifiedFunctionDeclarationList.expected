@@ -1,8 +1,10 @@
 Program
   List
-    FuncDecl INT="int" LPAREN="(" RPAREN=")"
+    FuncDecl
       IdDecl ID="a"
-      FuncBody LBRACE="{" RBRACE="}"
-    FuncDecl INT="int" LPAREN="(" RPAREN=")"
+      Block
+        List
+    FuncDecl
       IdDecl ID="b"
-      FuncBody LBRACE="{" RBRACE="}"
+      Block
+        List
