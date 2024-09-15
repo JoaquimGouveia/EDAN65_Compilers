@@ -10,6 +10,21 @@ VarAssignStmt : Stmt ::= IdUse:Expr Numeral:Expr;
 
 
 abstract Expr;
+abstract BinOp : Expr ::= Left:Expr Right:Expr;
+
+Add : BinOp;
+Mul : BinOp;
+Div : BinOp;
+Sub : BinOp;
+Eq : BinOp;
+Neq : BinOp;
+Lt : BinOp;
+Gt : BinOp;
+Mod : BinOp;
+Le : BinOp;
+Ge : BinOp;
+
 Numeral : Expr ::= <NUMERAL>;
 IdUse : Expr ::= <ID>; 
+
 

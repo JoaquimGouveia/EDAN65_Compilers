@@ -40,13 +40,13 @@ NUMERAL = [0-9]+ ("." [0-9]+)? // Maybe just [0-9]+ since they are supposed to b
 // token definitions
 "if"          { return sym(Terminals.IF); }
 "int"         { return sym(Terminals.INT); }
-"+"           { return sym(Terminals.PLUS); }
-"-"           { return sym(Terminals.MINUS); }
+"+"           { return sym(Terminals.ADD); }
+"-"           { return sym(Terminals.SUB); }
 "*"           { return sym(Terminals.MUL); }
 "/"           { return sym(Terminals.DIV); }
 "%"           { return sym(Terminals.MOD); }
 "=="          { return sym(Terminals.EQ); }
-"!="          { return sym(Terminals.NE); }
+"!="          { return sym(Terminals.NEQ); }
 "<"           { return sym(Terminals.LT); }
 "<="          { return sym(Terminals.LE); }
 ">"           { return sym(Terminals.GT); }
