@@ -33,6 +33,8 @@
 %typeof param = "Param";
 %typeof param_list = "List";
 %typeof opt_param_list = "List";
+%typeof return_stmt = "ReturnStmt";
+%typeof while_stmt = "WhileStmt";
 
 %goal program;
 
@@ -69,7 +71,13 @@ stmt_list =
 stmt = var_decl_stmt.a {: return a; :}
         | var_assign_stmt.a {: return a; :}
         | func_call_stmt.a {: return a; :}
+        | return_stmt.a {: return a; :}
+        | while_stmt.a {: return a; :}
         ;
+
+return_stmt = RETURN expr.a SEMICOLON {: return new ReturnStmt(a); :};
+
+while_stmt = WHILE LPAREN expr.a RPAREN block.b  {: return new WhileStmt(a,b); :};
 
 opt_arg_list = arg_list.a {: return a; :}
              | {: return new List(); :}

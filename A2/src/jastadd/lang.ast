@@ -9,7 +9,8 @@ abstract Stmt;
 VarDeclStmt : Stmt ::= IdDecl [Expr];
 VarAssignStmt : Stmt ::= IdUse:Expr Numeral:Expr;
 FunctionCallStmt: Stmt ::= FunctionCall:Expr;
-
+ReturnStmt: Stmt ::= Expr;
+WhileStmt: Stmt ::= Expr Block;
 
 abstract Expr;
 FunctionCall : Expr ::= IdUse:Expr Expr*;
