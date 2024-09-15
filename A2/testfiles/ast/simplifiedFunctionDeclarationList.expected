@@ -2,9 +2,11 @@ Program
   List
     FuncDecl
       IdDecl ID="a"
+      List
       Block
         List
     FuncDecl
       IdDecl ID="b"
+      List
       Block
         List

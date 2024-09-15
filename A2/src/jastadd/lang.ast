@@ -1,17 +1,20 @@
 Program ::= FuncDecl*;
 
-FuncDecl ::= IdDecl Block;
+FuncDecl ::= IdDecl Param* Block;
+Param ::= <ID>;
 Block ::= Stmt*;
 IdDecl ::= <ID>;
 
 abstract Stmt;
 VarDeclStmt : Stmt ::= IdDecl [Expr];
 VarAssignStmt : Stmt ::= IdUse:Expr Numeral:Expr;
+FunctionCallStmt: Stmt ::= FunctionCall:Expr;
 
 
 abstract Expr;
-abstract BinOp : Expr ::= Left:Expr Right:Expr;
+FunctionCall : Expr ::= IdUse:Expr Expr*;
 
+abstract BinOp : Expr ::= Left:Expr Right:Expr;
 Add : BinOp;
 Mul : BinOp;
 Div : BinOp;
