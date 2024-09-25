@@ -22,7 +22,7 @@ public class TestMSNVisitor {
     private static final File TEST_DIRECTORY = new File("testfiles/msnvisitor");
 
     private final String filename;
-    public TestVisitor(String testFile) {
+    public TestMSNVisitor(String testFile) {
         filename = testFile;
     }
 
@@ -30,7 +30,7 @@ public class TestMSNVisitor {
         try (ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 PrintStream outStream = new PrintStream(bytes)) {
             Program program = (Program) Util.parse(new File(TEST_DIRECTORY, filename));
-            outStream.println("MSN: " + CheckInteractiveVisitor.result(program));
+            outStream.println("MSN: " + MSNVisitor.result(program));
           String actual = bytes.toString();
           Util.compareOutput(actual,
                   new File(TEST_DIRECTORY, Util.changeExtension(filename, ".out")),
