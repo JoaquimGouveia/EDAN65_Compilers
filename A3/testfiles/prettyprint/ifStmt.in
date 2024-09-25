@@ -1,0 +1,9 @@
+int a() {
+    if (x) {
+        if(y) {
+            int d = 2;
+        } else {
+            return 2;
+        }
+    }
+}

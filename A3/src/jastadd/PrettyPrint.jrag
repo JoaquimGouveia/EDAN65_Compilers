@@ -27,7 +27,7 @@ aspect PrettyPrint {
        }
        out.print(")");
 
-       block.prettyPrint(out, ind);
+       getBlock().prettyPrint(out, ind);
     }
 
     public void Param.prettyPrint(PrintStream out, String ind) {
@@ -59,9 +59,9 @@ aspect PrettyPrint {
     }
 
     public void VarAssignStmt.prettyPrint(PrintStream out, String ind) {
-        getIdUse.prettyPrint(out, ind);
+        getIdUse().prettyPrint(out, ind);
         out.print(" = ");
-        Numeral.prettyPrint(out, ind);
+        getNumeral().prettyPrint(out, ind);
         out.print(";");
     }
 
@@ -176,7 +176,7 @@ aspect PrettyPrint {
         getRight().prettyPrint(out, ind);
     }
 
-    public void Neq.prettyPrint(PrintStream out, String ind) {
+    public void Neg.prettyPrint(PrintStream out, String ind) {
        out.print("-");
        getExpr().prettyPrint(out, ind);
     }
