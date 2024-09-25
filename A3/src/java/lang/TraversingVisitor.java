@@ -69,11 +69,40 @@ public Object visit(Numeral node, Object data) {
 public Object visit(IdUse node, Object data) {
     return visitChildren(node, data);
 }
+public Object visit(Add node, Object data) {
+    return visitChildren(node, data);
+}
+public Object visit(Mul node, Object data) {
+    return visitChildren(node, data);
+}
+public Object visit(Div node, Object data) {
+    return visitChildren(node, data);
+}
+public Object visit(Sub node, Object data) {
+    return visitChildren(node, data);
+}
+public Object visit(Eq node, Object data) {
+    return visitChildren(node, data);
+}
+public Object visit(Neq node, Object data) {
+    return visitChildren(node, data);
+}
+public Object visit(Lt node, Object data) {
+    return visitChildren(node, data);
+}
+public Object visit(Gt node, Object data) {
+    return visitChildren(node, data);
+}
+public Object visit(Mod node, Object data) {
+    return visitChildren(node, data);
+}
+public Object visit(Le node, Object data) {
+    return visitChildren(node, data);
+}
+public Object visit(Ge node, Object data) {
+    return visitChildren(node, data);
+}
 
-
-
-
-    
 }
 
 
