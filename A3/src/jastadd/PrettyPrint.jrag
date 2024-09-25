@@ -13,6 +13,7 @@ aspect PrettyPrint {
     }
 
     public void FuncDecl.prettyPrint(PrintStream out, String ind) {
+       out.print("int ");
        getIdDecl().prettyPrint(out, ind); 
        out.print("(");
        int nrParams = getNumParam();
