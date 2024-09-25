@@ -14,7 +14,6 @@ aspect Visitor {
         public Object visit(VarAssignStmt node, Object data);
         public Object visit(FunctionCallStmt node, Object data);
         public Object visit(ReturnStmt node, Object data);
-        public Object visit(ReturnStmt node, Object data);
         public Object visit(WhileStmt node, Object data);
         public Object visit(IfStmt node, Object data);
         public Object visit(FunctionCall node, Object data);
@@ -43,6 +42,7 @@ aspect Visitor {
     public Object Program.accept(Visitor visitor, Object data) {
         return visitor.visit(this, data);
     }
+
     public Object FuncDecl.accept(Visitor visitor, Object data) {
         return visitor.visit(this, data);
     }
