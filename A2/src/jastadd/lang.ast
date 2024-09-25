@@ -2,7 +2,7 @@ Program ::= FuncDecl*;
 
 FuncDecl ::= IdDecl Param* Block;
 Param ::= <ID>;
-Block ::= Stmt*;
+Block : Stmt ::= Stmt*;
 IdDecl ::= <ID>;
 
 abstract Stmt;

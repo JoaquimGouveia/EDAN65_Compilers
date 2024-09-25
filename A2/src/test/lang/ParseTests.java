@@ -56,6 +56,10 @@ public class ParseTests {
         Util.testValidSyntax(TEST_DIRECTORY, "notTypeCorrect.in");
     }
 
+    @Test public void nestledEmptyBlock() {
+        Util.testValidSyntax(TEST_DIRECTORY, "nestledEmptyBlock.in");
+    }
+
     @Test
     public void error() {
         Util.testSyntaxError(TEST_DIRECTORY, "error.in");

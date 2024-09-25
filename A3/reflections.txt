@@ -1,0 +1,19 @@
+• The symbol table is simpler than a traditional symbol table in that it only keeps track of names
+and not the binding (declaration) of a name. This would be needed to support, for example, type
+checking. How would you modify the SymbolTable class to support name binding?
+Answer: Possible change the names variable from Set<String> to Map<String, Object> ?
+
+
+• Suppose you have a main program with a Program AST. What would a call look like that performs
+name analysis and prints the errors to standard error? (Hint: google standard streams java if you
+don’t know what standard error is.)
+Answer: Program ast = ...; // AST root for the program
+ast.checkNames(System.err);  // Perform name analysis and print errors to standard error
+
+• How does the push operation work in SymbolTable? Why is there no pop operation?
+Answer: The push operation is called everytime we enter a new scope, for example when the 
+        the Let.checkNames is called. The method creates a new symbol table and adds it on top of the existing ones.
+        By calling push(), a new SymbolTable is created with a reference to the existing symbol table (via tail).
+        This new table can declare new names while still being able to look up names in the outer scopes (via the lookup method).
+        There is no need for the pop operation, when a certain scope ends the current Symbol table reference is simply discarded
+        and the program uses the previous one.
