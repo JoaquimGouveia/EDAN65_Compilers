@@ -27,3 +27,7 @@ inside the visitor or the data parameter? What are the pros and cons of these ap
 - Either by using state variables, which keeps track of the current and maximum depth inside the visitor as instance variables (in the visitor class), they would be updated by the visitor as it traverses the AST. For each block/if-/else-statement it increments the currentDepth and updates maxDepth if necessesary. 
 By using the data parameter the visit methods would now take currentDepth as an additional paramater as well. Each time the visitor encounters a block/if/while, it would increment the depth by passing currentDepth+1 to the child nodes. The maximum depth is then calculated by comparing the returned depth values. 
 Pros of using state variables is that it is easy to implement, but might come with complications if using multiple threads or recursion. The data parameters are safer but not as easy to implement. 
+
+Suppose the visitor framework had type parameters for the return value and the data parameter.
+What would the advantage be?
+- type safety, flexibility, reusability, cleaner code
