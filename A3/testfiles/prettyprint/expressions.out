@@ -1,5 +1,5 @@
-int b(){}
-int a(){
+int b() {}
+int a() {
 int x;
 int y2
 int s2 * 4

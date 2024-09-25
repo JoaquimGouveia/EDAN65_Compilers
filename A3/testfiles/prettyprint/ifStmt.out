@@ -1,4 +1,4 @@
-int a(){
+int a() {
 if (x) {
 if (y) {
 int d2}
