@@ -2,7 +2,7 @@ import java.io.PrintStream;
 
 aspect PrettyPrint {
     public void ASTNode.prettyPrint(PrintStream out) {
-        prettyPrint(out, "");
+        prettyPrint(out, "    ");
         out.println();
     }
 
@@ -39,10 +39,10 @@ aspect PrettyPrint {
     public void Block.prettyPrint(PrintStream out, String ind) {
         out.print("{");
         for (Stmt stmt : getStmts()) {
-            out.println(ind);
+            out.println();
             stmt.prettyPrint(out, ind);
         }
-        out.println("}");
+        out.println("\n}");
     }
 
     public void IdDecl.prettyPrint(PrintStream out, String ind) {
@@ -50,10 +50,12 @@ aspect PrettyPrint {
     }
 
     public void VarDeclStmt.prettyPrint(PrintStream out, String ind) {
-        out.print("int ");
+        out.print(ind + "int ");
         getIdDecl().prettyPrint(out, ind);
         if (hasExpr()) {
+            out.print(" = ");
             getExpr().prettyPrint(out, ind);
+            out.print(";");
         } else {
             out.print(";");
         }
@@ -73,27 +75,27 @@ aspect PrettyPrint {
     }
 
     public void ReturnStmt.prettyPrint(PrintStream out, String ind) {
-        out.print("return ");
+        out.print(ind + "return ");
         getExpr().prettyPrint(out, ind);
         out.print(";");
     }
     
     public void WhileStmt.prettyPrint(PrintStream out, String ind) {
-        out.print("while (");
+        out.print(ind + "while (");
         getExpr().prettyPrint(out, ind);
         out.print(") ");
-        getBlock().prettyPrint(out, ind);
+        getBlock().prettyPrint(out, ind + "    ");
     }
 
     public void IfStmt.prettyPrint(PrintStream out, String ind) {
-        out.print("if (");
+        out.print(ind + "if (");
         getExpr().prettyPrint(out, ind);
         out.print(") ");
-        getThenBlock().prettyPrint(out, ind);
+        getThenBlock().prettyPrint(out, ind + "    ");
 
         if (hasElseBlock()) {
-            out.print(" else ");
-            getElseBlock().prettyPrint(out, ind);
+            out.print(ind + " else ");
+            getElseBlock().prettyPrint(out, ind + "    ");
         }
     }
 

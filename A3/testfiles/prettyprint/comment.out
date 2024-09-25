@@ -1,4 +1,5 @@
 int a() {
-int x3
-return x;}
+    int x = 3;
+    return x;
+}
 

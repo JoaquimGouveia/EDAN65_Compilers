@@ -1,9 +1,13 @@
 int a() {
-if (x) {
-if (y) {
-int d2}
- else {
-return 2;}
+    if (x) {
+        if (y) {
+            int d = 2;
 }
+         else {
+            return 2;
+}
+
+}
+
 }
 
