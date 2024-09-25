@@ -39,13 +39,12 @@ aspect PrettyPrint {
     }
 
     public void Block.prettyPrint(PrintStream out, String ind) {
-        if (!hasStmt()) {
-            out.print("{");
-            out.print("}");
-        }
-
         for (Stmt stmt : getStmts()) {
             stmt.prettyPrint(out, ind);
+            if (stmt instanceof Block){
+                out.print("{");
+                out.print("}");
+            }
         }
     }
 
