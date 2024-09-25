@@ -1,10 +1,10 @@
 int gcd1(int a, int b) {
     while (a != b) {
         if (a > b) {
-a = a - b;
+            a = a - b;
 }
          else {
-b = b - a;
+            b = b - a;
 }
 
 }
@@ -21,12 +21,12 @@ int gcd2(int a, int b) {
 int main() {
     int a;
     int b;
-a = read();
-b = read();
-print(gcd1(a, b));
-print(gcd2(a, b));
+    a = read();
+    b = read();
+    print(gcd1(a, b));
+    print(gcd2(a, b));
     int diff = gcd1(a, b) - gcd2(a, b);
-print(diff);
+    print(diff);
     return 0;
 }
 

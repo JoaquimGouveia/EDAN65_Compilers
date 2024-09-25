@@ -1,9 +1,9 @@
 int b() {
-a = b > c - 10;
-a = b > c * x;
-a = x / -b == c;
+    a = b > c - 10;
+    a = b > c * x;
+    a = x / -b == c;
     if (b) {
-a = 3;
+        a = 3;
 }
 
 }
