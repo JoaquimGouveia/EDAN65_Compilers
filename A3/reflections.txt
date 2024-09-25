@@ -16,4 +16,4 @@ Answer: The push operation is called everytime we enter a new scope, for example
         By calling push(), a new SymbolTable is created with a reference to the existing symbol table (via tail).
         This new table can declare new names while still being able to look up names in the outer scopes (via the lookup method).
         There is no need for the pop operation, when a certain scope ends the current Symbol table reference is simply discarded
-        and the program uses the previous one.
+        and the program uses the previous one. To discard the current scope we can just do symbols = symbols.tail
