@@ -2,9 +2,6 @@ int a() {
 }
 int b(int c, int d) {
 }
-int c() {
-    int e = 2;
-    int f = 2 * 3;
-    int d = b(e, f);
+int c() {    int e = 2;    int f = 2 * 3;    int d = b(e, f);
 }
 
