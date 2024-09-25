@@ -42,7 +42,7 @@ aspect PrettyPrint {
             out.println();
             stmt.prettyPrint(out, ind);
         }
-        out.println("\n}");
+        out.println(ind + "\n}");
     }
 
     public void IdDecl.prettyPrint(PrintStream out, String ind) {
