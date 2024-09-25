@@ -1,0 +1,37 @@
+Program
+  List
+    FuncDecl
+      IdDecl ID="a"
+      List
+      Block
+        List
+    FuncDecl
+      IdDecl ID="b"
+      List
+        Param ID="c"
+        Param ID="d"
+      Block
+        List
+    FuncDecl
+      IdDecl ID="c"
+      List
+      Block
+        List
+          VarDeclStmt
+            IdDecl ID="e"
+            Opt
+              Numeral NUMERAL="2"
+          VarDeclStmt
+            IdDecl ID="f"
+            Opt
+              Mul
+                Numeral NUMERAL="2"
+                Numeral NUMERAL="3"
+          VarDeclStmt
+            IdDecl ID="d"
+            Opt
+              FunctionCall
+                IdUse ID="b"
+                List
+                  IdUse ID="e"
+                  IdUse ID="f"

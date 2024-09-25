@@ -1,0 +1,36 @@
+Program ::= FuncDecl*;
+
+FuncDecl ::= IdDecl Param* Block;
+Param ::= <ID>;
+Block : Stmt ::= Stmt*;
+IdDecl ::= <ID>;
+
+abstract Stmt;
+VarDeclStmt : Stmt ::= IdDecl [Expr];
+VarAssignStmt : Stmt ::= IdUse:Expr Numeral:Expr;
+FunctionCallStmt: Stmt ::= FunctionCall:Expr;
+ReturnStmt: Stmt ::= Expr;
+WhileStmt: Stmt ::= Expr Block;
+IfStmt: Stmt ::= Expr ThenBlock:Block [ElseBlock:Block];
+
+abstract Expr;
+FunctionCall : Expr ::= IdUse:Expr Expr*;
+
+abstract BinOp : Expr ::= Left:Expr Right:Expr;
+Add : BinOp;
+Mul : BinOp;
+Div : BinOp;
+Sub : BinOp;
+Eq : BinOp;
+Neq : BinOp;
+Lt : BinOp;
+Gt : BinOp;
+Mod : BinOp;
+Le : BinOp;
+Ge : BinOp;
+
+Neg : Expr ::= Expr;
+Numeral : Expr ::= <NUMERAL>;
+IdUse : Expr ::= <ID>; 
+
+
