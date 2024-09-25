@@ -30,6 +30,45 @@ aspect PrettyPrint {
        block.prettyPrint(out, ind);
     }
 
+    public void Param.prettyPrint(PrintStream out, String ind) {
+        out.print("int ");
+        out.print(getID());
+    }
+
+    public void Block.prettyPrint(PrintStream out, String ind) {
+        out.print("{");
+        for (Stmt stmt : getStmts()) {
+            out.println(ind);
+            stmt.prettyPrint(out, ind);
+        }
+        out.println("}");
+    }
+
+    public void IdDecl.prettyPrint(PrintStream out, String ind) {
+        out.print(getID());
+    }
+
+    public void VarDeclStmt.prettyPrint(PrintStream out, String ind) {
+        out.print("int ");
+        getIdDecl().prettyPrint(out, ind);
+        if (hasExpr()) {
+            getExpr().prettyPrint(out, ind);
+        } else {
+            out.print(";");
+        }
+    }
+
+    public void VarAssignStmt.prettyPrint(PrintStream out, String ind) {
+        getIdUse.prettyPrint(out, ind);
+        out.print(" = ");
+        Numeral.prettyPrint(out, ind);
+        out.print(";");
+    }
+
+    
+
+
+
 
 
 
