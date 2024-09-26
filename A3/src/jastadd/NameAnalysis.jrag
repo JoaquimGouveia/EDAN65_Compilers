@@ -120,6 +120,18 @@ aspect NameAnalysis {
         }
     }
 
+    public void WhileStmt.checkNames(PrintStream err, SymbolTable symbols) {
+        getExpr().checkNames(err, symbols);
+        getBlock().checkNames(err, symbols);
+    }
+
+    public void IfStmt.checkNames(PrintStream err, SymbolTable symbols) {
+        getExpr().checkNames(err, symbols);
+        getThenBlock().checkNames(err, symbols);
+        if (hasElseBlock()) {
+            getElseBlock().checkNames(err, symbols);
+        }
+    }
     
     public void IdDecl.checkNames(PrintStream err, SymbolTable symbols) {
         if (!symbols.declare(getID())) {
