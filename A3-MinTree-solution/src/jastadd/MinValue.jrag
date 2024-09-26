@@ -3,6 +3,10 @@ aspect MinValue {
     /*
     * Pay attention! expression-style equations is defined with "="
     * while block-style equations just need braces "{}"
+    *
+    * For synthetic attributes the equation has to be declared in the same Node object
+    * The equations can use tokens and attributes of the node and its children
+    * Meaning that information flows upwards in the ASTree
     */ 
     syn int Node.localMin() = 0;
     eq Pair.localMin() {
@@ -13,8 +17,17 @@ aspect MinValue {
     eq Leaf.localMin() = getNumber();
 
     // Exercise 2
+    /*
+    * For inherited attributes, the equation is defined by the Program node,
+    * which is an ancestor in the AST. Information
+    * for this type of attirbutes flows instead downwards in the ASTree
+    * Note that we specify the child (getNode) for which the equation is valid, according to the names in the
+    * abstract grammar. The equation above states that the value of the attribute globalMin is ... for the
+    * child Node. The code ... executes in the context of Program, and can access attributes, tokens, and
+    * children in Program
+    */
     inh int Node.globalMin();
-    eq Program.getNode().globalMin() = 0;
+    eq Program.getNode().globalMin() = getNode().localMin();
 
     // Exercise 3
     syn boolean Leaf.isMinValue() = false;
