@@ -1,0 +1,60 @@
+import java.util.Set;
+import java.util.HashSet;
+
+aspect NameAnalysis {
+    public class SymbolTable {
+        private static final SymbolTable BOTTOM = new SymbolTable() {
+            @Override
+            public boolean declare(String name) {
+                throw new UnsupportedOperationException(
+                        "cannot add name to bottom of name stack");
+            }
+            @Override
+            public boolean lookup(String name) {
+                return false;
+            }
+        };
+
+        private final SymbolTable tail;
+        private final Set<String> names = new HashSet<String>();
+
+        public SymbolTable() {
+            tail = BOTTOM;
+        }
+
+        public SymbolTable(SymbolTable tail) {
+            this.tail = tail;
+        }
+
+        /**
+         * Attempt to add a new name to the symbol table.
+         * @return true if name was not already declared
+         */
+        public boolean declare(String name) {
+            return names.add(name);
+        }
+
+        /**
+         * @return true if name has been declared
+         */
+        public boolean lookup(String name) {
+            return names.contains(name) || tail.lookup(name);
+        }
+
+        /**
+         * Push a new table on the stack.
+         * @return the new top of the stack
+         */
+        public SymbolTable push() {
+            return new SymbolTable(this);
+        }
+    }
+
+    /**
+     * @param err where to write error messages
+     */
+    public void Program.checkNames(PrintStream err) {
+        SymbolTable symbols = new SymbolTable();
+        checkNames(err, symbols);
+    }
+}
