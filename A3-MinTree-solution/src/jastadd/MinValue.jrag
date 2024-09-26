@@ -24,15 +24,26 @@ aspect MinValue {
     * Note that we specify the child (getNode) for which the equation is valid, according to the names in the
     * abstract grammar. The equation above states that the value of the attribute globalMin is ... for the
     * child Node. The code ... executes in the context of Program, and can access attributes, tokens, and
-    * children in Program
+    * children in Program. 
     */
     inh int Node.globalMin();
     eq Program.getNode().globalMin() = getNode().localMin();
 
     // Exercise 3
-    syn boolean Leaf.isMinValue() = false;
+    // if localMin == globalMin then true else false
+    syn boolean Leaf.isMinValue() = localMin() == globalMin();
     
     // Exercise 4
-    syn int Program.nbrOfMinValues() = 0;
+    /*
+    * Program.nbrOfMinValues() computes the global number of min values in the tree.
+    * The global number of min values in the tree is the same as the local number of min values
+    * in the root node of the tree.
+    * Node.nbrOfMinValues() computes the local number of min values for its subtree.
+    * Meaning that for a leaf this number is eithher 1 or 0 (depending on if it's number is the same as the global min value)
+    * For a Pair it will instead be the sum of the local number of min values in its children's subtrees.
+    */
+    syn int Program.nbrOfMinValues() = getNode().nbrOfMinValues();
     syn int Node.nbrOfMinValues() = 0;
+    eq Leaf.nbrOfMinValues() = isMinValue() ? 1 : 0;
+    eq Pair.nbrOfMinValues() = getLeft().nbrOfMinValues() + getRight().nbrOfMinValues();
 }
