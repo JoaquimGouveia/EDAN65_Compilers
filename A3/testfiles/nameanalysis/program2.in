@@ -1,0 +1,13 @@
+int main(){
+    int a = 3;
+    a = 3 + b; //wrong
+
+    int c;
+    c = c + d; //wrong
+
+    int e; 
+    int e = 3 + 7; //wrong 
+
+    int f; 
+    f = 3; 
+}

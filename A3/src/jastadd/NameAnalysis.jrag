@@ -99,10 +99,6 @@ aspect NameAnalysis {
     }
 
     public void VarDeclStmt.checkNames(PrintStream err, SymbolTable symbols) {
-        // if (!symbols.declare(getIdDecl().getID())) {
-        //     err.format("Error at line %d: Variable \'%s\' is already declared!", getLine(), getIdDecl().getID());
-        //     err.println();
-        // }
         getIdDecl().checkNames(err, symbols);
         if (hasExpr()) {
             getExpr().checkNames(err, symbols);
