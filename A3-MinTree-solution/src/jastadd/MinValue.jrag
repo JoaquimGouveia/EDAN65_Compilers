@@ -1,6 +1,16 @@
 aspect MinValue {
     // Exercise 1
+    /*
+    * Pay attention! expression-style equations is defined with "="
+    * while block-style equations just need braces "{}"
+    */ 
     syn int Node.localMin() = 0;
+    eq Pair.localMin() {
+        int left = getLeft().localMin();
+        int right = getRight().localMin();
+        return left < right ? left : right;
+    }
+    eq Leaf.localMin() = getNumber();
 
     // Exercise 2
     inh int Node.globalMin();
