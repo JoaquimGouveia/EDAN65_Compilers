@@ -132,6 +132,14 @@ aspect NameAnalysis {
             getElseBlock().checkNames(err, symbols);
         }
     }
+
+    public void FunctionCall.checkNames(PrintStream err, SymbolTable symbols) {
+        getIdUse().checkNames(err, symbols);
+        for (Expr expr : getExprs()){
+            expr.checkNames(err, symbols);
+        }
+    }
+
     
     public void IdDecl.checkNames(PrintStream err, SymbolTable symbols) {
         if (!symbols.declare(getID())) {
