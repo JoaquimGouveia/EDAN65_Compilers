@@ -57,4 +57,55 @@ aspect NameAnalysis {
         SymbolTable symbols = new SymbolTable();
         checkNames(err, symbols);
     }
+
+    /**
+     * @param err where to write error messages
+     * @param symbols symbol table
+     */
+    public void ASTNode.checkNames(PrintStream err, SymbolTable symbols) {
+    for (ASTNode child : astChildren()) {
+          child.checkNames(err, symbols);
+        }
+    }
+
+    public void Binding.checkNames(PrintStream err, SymbolTable symbols) {
+        getExpr().checkNames(err, symbols.push());
+        getIdDecl().checkNames(err, symbols);
+    }
+
+    public void Let.checkNames(PrintStream err, SymbolTable symbols) {
+        symbols = symbols.push();
+        for (Binding b : getBindings()) {
+          b.checkNames(err, symbols);
+        }
+        getExpr().checkNames(err, symbols);
+    }
+
+    public void Ask.checkNames(PrintStream err, SymbolTable symbols) {
+        if (hasDefault()) {
+            getDefault().checkNames(err, symbols.push());
+        }
+    }
+
+    public void IdDecl.checkNames(PrintStream err, SymbolTable symbols) {
+        if (!symbols.declare(getID())) {
+            err.format("Error at line %d: symbol \'%s\' is already declared!", getLine(), getID());
+            err.println();
+        }
+    }
+
+    public void IdUse.checkNames(PrintStream err, SymbolTable symbols) {
+        if (!symbols.lookup(getID())) {
+            err.format("Error at line %d: symbol \'%s\' has not been declared before this use!", getLine(), getID());
+            err.println();
+        }
+    }
+
+    /**
+     * Helper method
+     * @return line number of this token
+     */
+    public int ASTNode.getLine() {
+        return getLine(getStart());
+    }
 }
