@@ -79,7 +79,22 @@ aspect NameAnalysis {
 		}
 	}
 
-
+    public void Param.checkNames(PrintStream err, SymbolTable symbols) {
+        if (!symbols.declare(getID())) {
+            err.format("Error at line %d: symbol \'%s\' is already declared!", getLine(), getID());
+            err.println();
+        }
+    }
+    
+    public void Block.checkNames(PrintStream err, SymbolTable symbols) {
+        symbols = symbols.push();
+        if (hasStmt()) {
+            for (Stmt stmt : getStmts()) {
+                stmt.checkNames(err, symbols);
+            }
+        }
+    }
+    
     public void IdDecl.checkNames(PrintStream err, SymbolTable symbols) {
         if (!symbols.declare(getID())) {
             err.format("Error at line %d: symbol \'%s\' is already declared!", getLine(), getID());
@@ -87,12 +102,6 @@ aspect NameAnalysis {
         }
     }
 
-    public void IdUse.checkNames(PrintStream err, SymbolTable symbols) {
-        if (!symbols.lookup(getID())) {
-            err.format("Error at line %d: symbol \'%s\' has not been declared before this use!", getLine(), getID());
-            err.println();
-        }
-    }
 
     /**
      * Helper method
