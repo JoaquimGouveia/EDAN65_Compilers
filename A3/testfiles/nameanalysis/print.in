@@ -1,4 +1,4 @@
-int a() {
-  print(b);
-  int b = 1;
+int main() {
+  print(a);
+  int a = 10;
 }
