@@ -2,7 +2,7 @@ import java.io.PrintStream;
 
 aspect PrettyPrint {
     public void ASTNode.prettyPrint(PrintStream out) {
-        prettyPrint(out, "    ");
+        prettyPrint(out, "");
         out.println();
     }
 
@@ -28,9 +28,8 @@ aspect PrettyPrint {
        }
        out.print(") ");
 
-       out.print("{");
        getBlock().prettyPrint(out, ind);
-       out.print("\n}\n\n");
+       out.print("\n\n");
     }
 
     public void Param.prettyPrint(PrintStream out, String ind) {
@@ -39,13 +38,11 @@ aspect PrettyPrint {
     }
 
     public void Block.prettyPrint(PrintStream out, String ind) {
+        out.print("{");
         for (Stmt stmt : getStmts()) {
-            stmt.prettyPrint(out, ind);
-            if (stmt instanceof Block){
-                out.print("{");
-                out.print("}");
-            }
+            stmt.prettyPrint(out, ind + "    ");
         }
+        out.print("\n" + ind + "}");
     }
 
     public void IdDecl.prettyPrint(PrintStream out, String ind) {
@@ -68,7 +65,7 @@ aspect PrettyPrint {
         out.print("\n"+ ind);
         getIdUse().prettyPrint(out, ind);
         out.print(" = ");
-        getNumeral().prettyPrint(out, ind);
+        getExpression().prettyPrint(out, ind);
         out.print(";");
     }
 
@@ -88,24 +85,18 @@ aspect PrettyPrint {
         out.print("\n" + ind + "while (");
         getExpr().prettyPrint(out, ind);
         out.print(") ");
-        out.print("{");
-        getBlock().prettyPrint(out, ind + "    ");
-        out.print("\n" + ind + "}");
+        getBlock().prettyPrint(out, ind);
     }
 
     public void IfStmt.prettyPrint(PrintStream out, String ind) {
         out.print("\n" + ind + "if (");
         getExpr().prettyPrint(out, ind);
         out.print(") ");
-        out.print("{");
-        getThenBlock().prettyPrint(out, ind + "    ");
-        out.print("\n" + ind + "}");
+        getThenBlock().prettyPrint(out, ind);
 
         if (hasElseBlock()) {
             out.print(" else ");
-            out.print("{");
-            getElseBlock().prettyPrint(out, ind + "    ");
-            out.print("\n" + ind + "}");
+            getElseBlock().prettyPrint(out, ind);
         }
     }
 

@@ -7,7 +7,7 @@ IdDecl ::= <ID>;
 
 abstract Stmt;
 VarDeclStmt : Stmt ::= IdDecl [Expr];
-VarAssignStmt : Stmt ::= IdUse:Expr Numeral:Expr;
+VarAssignStmt : Stmt ::= IdUse:Expr Expression:Expr;
 FunctionCallStmt: Stmt ::= FunctionCall:Expr;
 ReturnStmt: Stmt ::= Expr;
 WhileStmt: Stmt ::= Expr Block;

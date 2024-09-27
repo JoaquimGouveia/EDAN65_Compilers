@@ -23,30 +23,30 @@ public class MSNVisitor extends TraversingVisitor {
         return null;
     }
 
-    @Override
-    public Object visit(WhileStmt whileStmt, Object data) {
-        currentDepth++;
-        for (Stmt stmt : whileStmt.getBlock().getStmts()) {
-            stmt.accept(this, data);
-        }
-        maxDepth = Math.max(maxDepth, currentDepth);
-        currentDepth--;
-        return null;
-    }
+    // @Override
+    // public Object visit(WhileStmt whileStmt, Object data) {
+    //     currentDepth++;
+    //     for (Stmt stmt : whileStmt.getBlock().getStmts()) {
+    //         stmt.accept(this, data);
+    //     }
+    //     maxDepth = Math.max(maxDepth, currentDepth);
+    //     currentDepth--;
+    //     return null;
+    // }
 
-    @Override
-    public Object visit(IfStmt ifStmt, Object data) {
-        currentDepth++;
-        for (Stmt stmt : ifStmt.getThenBlock().getStmts()) {
-            stmt.accept(this, data);
-        }
-        if (ifStmt.hasElseBlock()) {
-            for (Stmt stmt : ifStmt.getElseBlock().getStmts()) {
-                stmt.accept(this, data);
-            }
-        }
-        maxDepth = Math.max(maxDepth, currentDepth);
-        currentDepth--;
-        return null;
-    }
+    // @Override
+    // public Object visit(IfStmt ifStmt, Object data) {
+    //     currentDepth++;
+    //     for (Stmt stmt : ifStmt.getThenBlock().getStmts()) {
+    //         stmt.accept(this, data);
+    //     }
+    //     if (ifStmt.hasElseBlock()) {
+    //         for (Stmt stmt : ifStmt.getElseBlock().getStmts()) {
+    //             stmt.accept(this, data);
+    //         }
+    //     }
+    //     maxDepth = Math.max(maxDepth, currentDepth);
+    //     currentDepth--;
+    //     return null;
+    // }
 }

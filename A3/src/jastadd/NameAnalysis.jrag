@@ -108,7 +108,7 @@ aspect NameAnalysis {
 
     public void VarAssignStmt.checkNames(PrintStream err, SymbolTable symbols) {
         getIdUse().checkNames(err, symbols);
-        getNumeral().checkNames(err, symbols);
+        getExpression().checkNames(err, symbols); //Behövs denna?
      }
 
     public void FunctionCallStmt.checkNames(PrintStream err, SymbolTable symbols) {
@@ -116,9 +116,7 @@ aspect NameAnalysis {
     }
 
     public void ReturnStmt.checkNames(PrintStream err, SymbolTable symbols) {
-        if (getExpr() != null) { //Behövs detta? 
-            getExpr().checkNames(err, symbols);
-        }
+        getExpr().checkNames(err, symbols);
     }
 
     public void WhileStmt.checkNames(PrintStream err, SymbolTable symbols) {
