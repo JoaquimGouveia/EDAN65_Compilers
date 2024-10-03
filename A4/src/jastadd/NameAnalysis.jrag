@@ -5,6 +5,13 @@ aspect NameAnalysis {
     // Introduce an inherited attribute lookup(String name) in the IdUse class. It can be seen as a helper attribute to compute our decl().  
     inh IdDecl IdUse.lookup(String name);
 
-
-
+// Searching within the local block for declarations
+syn IdDecl Block.localLookup(String name, int until) {
+    for (int i = 0; i <= until; i++){
+        IdDecl decl = getStmt(i).localLookup(name);
+        if (decl.getID().equals(name)) {
+            return decl;
+        }
+    }
+    return unknownDecl(); // Fallback to unknownDecl if not found
 }
