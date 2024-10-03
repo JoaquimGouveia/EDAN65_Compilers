@@ -1,0 +1,3 @@
+int a(int x, int b) {
+    x = 3;
+}

@@ -1,0 +1,26 @@
+Program
+  List
+    FuncDecl
+      IdDecl ID="gcdSecond"
+      List
+        Param ID="a"
+        Param ID="b"
+      Block
+        List
+          IfStmt
+            Eq
+              IdUse ID="b"
+              Numeral NUMERAL="0"
+            Block
+              List
+                ReturnStmt
+                  IdUse ID="a"
+            Opt
+          ReturnStmt
+            FunctionCall
+              IdUse ID="gcdSecond"
+              List
+                IdUse ID="b"
+                Mod
+                  IdUse ID="a"
+                  IdUse ID="b"

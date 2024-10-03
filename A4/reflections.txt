@@ -1,0 +1,50 @@
+• The symbol table is simpler than a traditional symbol table in that it only keeps track of names
+and not the binding (declaration) of a name. This would be needed to support, for example, type
+checking. How would you modify the SymbolTable class to support name binding?
+Answer: Possible change the names variable from Set<String> to Map<String, Object> ?
+
+
+• Suppose you have a main program with a Program AST. What would a call look like that performs
+name analysis and prints the errors to standard error? (Hint: google standard streams java if you
+don’t know what standard error is.)
+Answer: Program ast = ...; // AST root for the program
+ast.checkNames(System.err);  // Perform name analysis and print errors to standard error
+
+
+• How does the push operation work in SymbolTable? Why is there no pop operation?
+Answer: The push operation is called everytime we enter a new scope, for example when the 
+        the Let.checkNames is called. The method creates a new symbol table and adds it on top of the existing ones.
+        By calling push(), a new SymbolTable is created with a reference to the existing symbol table (via tail).
+        This new table can declare new names while still being able to look up names in the outer scopes (via the lookup method).
+        There is no need for the pop operation, when a certain scope ends the current Symbol table reference is simply discarded
+        and the program uses the previous one. To discard the current scope we can just do symbols = symbols.tail
+
+
+• Think about how you could implement MSN analysis for SimpliC. Think first how you would solve it if
+you added methods to the AST classes. Then think about how you would solve it using a visitor. Try to
+answer the following questions.
+- What are possible strategies for implementing the MSN analysis? Should you use state variables
+inside the visitor or the data parameter? What are the pros and cons of these approaches?
+Answer: Either by using state variables, which keeps track of the current and maximum depth inside the visitor as instance variables (in the visitor class), they would be updated by the visitor as it traverses the AST. For each block/if-/else-statement it increments the currentDepth and updates maxDepth if necessesary. 
+By using the data parameter the visit methods would now take currentDepth as an additional paramater as well. Each time the visitor encounters a block/if/while, it would increment the depth by passing currentDepth+1 to the child nodes. The maximum depth is then calculated by comparing the returned depth values. 
+Pros of using state variables is that it is easy to implement, but might come with complications if using multiple threads or recursion. The data parameters are safer but not as easy to implement. 
+
+- Suppose the visitor framework had type parameters for the return value and the data parameter.
+What would the advantage be?
+Answer: type safety, flexibility, reusability, cleaner code
+
+
+• How can you handle built-in functions like print and read? (Hint! You can initialize the symbol
+table with mock declarations of built-in functions.)
+Answer: Add mock entries to the symbol table that inludes function name, type and parameters so that print and read doesn't need to be explicitly declared by the user before name analysis. 
+
+• In what circumstances should you be able to re-declare, or shadow, a variable name?
+Answer: If the rules of the language allows it, you should be able to re-declare a variable if they are in different functions. You should also be able to shadow a variable name if it's in an inner block. You might be ab le to shadow a function paramater from a block as well. 
+
+
+• In your opinion, should it be possible to shadow function parameters? Why, or why not?
+Answer: I think it should be allowed as it makes the language more flexible. However one might not use it as standard practice as it might cause some confusion. 
+
+• The examples provided above are good test cases. What other important test cases can you think
+of? Consider multiple parameters, if-then-else, etc.
+Answer: Perhaps variables declared inside loops, such as for/while. Nested function declaratioins - are the variables declared inside blocks handled properly? Global/local variables, where the local variable shadows the global. 

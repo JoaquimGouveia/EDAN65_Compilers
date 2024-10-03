@@ -1,0 +1,10 @@
+aspect NameAnalysis {
+
+    // Introduce an attribute decl() in the IdUse class which refers to the appropriate IdDecl node. 
+    syn IdDecl IdUse.decl() = lookup(getID());
+    // Introduce an inherited attribute lookup(String name) in the IdUse class. It can be seen as a helper attribute to compute our decl().  
+    inh IdDecl IdUse.lookup(String name);
+
+
+
+}
