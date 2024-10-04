@@ -1,17 +1,50 @@
 aspect NameAnalysis {
-
+    
     // Introduce an attribute decl() in the IdUse class which refers to the appropriate IdDecl node. 
     syn IdDecl IdUse.decl() = lookup(getID());
     // Introduce an inherited attribute lookup(String name) in the IdUse class. It can be seen as a helper attribute to compute our decl().  
     inh IdDecl IdUse.lookup(String name);
 
-// Searching within the local block for declarations
-syn IdDecl Block.localLookup(String name, int until) {
-    for (int i = 0; i <= until; i++){
-        IdDecl decl = getStmt(i).localLookup(name);
-        if (decl.getID().equals(name)) {
-            return decl;
-        }
+    // Easiest way to understand equation for inherited attribute is: "This is the value I want to give to my children."
+    eq Program.getChild().lookup(String name) = unknownDecl();
+
+
+
+    /*-------------------------------BLOCK-----------------------------*/ 
+    inh IdDecl Block.lookup(String name);
+    eq Block.getStmt(int index).lookup(String name) {
+        IdDecl decl = localLookup(name, index);
+        return !decl.isUnknown() ? decl : lookup(name);
     }
-    return unknownDecl(); // Fallback to unknownDecl if not found
+
+    // Introduce a localLookup for declaration-before-use implementation
+    syn IdDecl Block.localLookup(String name, int until) {
+        for (int index = 0; index <= until; index++) {
+            IdDecl decl = getStmt(index).localLookup(name); // Checks if the name is declared in a statement preceding the current statement
+            if (!decl.isUnknown()) {
+                return decl;
+            }
+        }
+        return unknownDecl();
+    }
+
+    /*-------------------------------Statement-----------------------------*/
+    // If we find a Statement which is not either a VariableDecl (or a Block) we return unknownDecl()
+    syn IdDecl Stmt.localLookup(String name) = unknownDecl();
+    eq VarDeclStmt.localLookup(String name) = getIdDecl().getID().equals(name) ? getIdDecl() : unknownDecl();
+
+    /*-------------------------------Identify same name declarations-----------------------------*/
+    // Introduce an inherited attribute lookup(String name) in the IdDecl class.
+    inh IdDecl IdDecl.lookup(String name);
+    syn boolean IdDecl.isMultiDeclared() = lookup(getID()) != this;
 }
+
+/*aspect CircularDefinitions {
+    // Identify circular definitions in variable assignments
+    syn boolean IdUse.isCircular() = inExprOf(decl());
+    inh boolean IdUse.inExprOf(IdDecl decl);
+    inh boolean VarAssignStmt.inExprOf(IdDecl decl);
+    eq VarAssignStmt.getExpression().inExprOf(IdDecl del) = {
+
+    } 
+}*/

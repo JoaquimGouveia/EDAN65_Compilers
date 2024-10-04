@@ -32,5 +32,7 @@ Ge : BinOp;
 Neg : Expr ::= Expr;
 Numeral : Expr ::= <NUMERAL>;
 IdUse : Expr ::= <ID>; 
+UnknownDecl: IdDecl;
+
 
 

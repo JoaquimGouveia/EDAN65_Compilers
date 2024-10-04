@@ -1,0 +1,59 @@
+import java.util.Set;
+import java.util.TreeSet;
+
+aspect Errors {
+    public class ErrorMessage implements Comparable<ErrorMessage> {
+        protected final String message;
+        protected final int lineNumber;
+        public ErrorMessage(String message, int lineNumber) {
+            this.message = message;
+            this.lineNumber = lineNumber;
+        }
+        public int compareTo(ErrorMessage other) {
+            if (lineNumber == other.lineNumber) {
+                return message.compareTo(other.message);
+            }
+            return Integer.compare(lineNumber, other.lineNumber);
+        }
+        public String toString() {
+            return "Error at line " + lineNumber + ": " + message;
+        }
+    }
+
+    // calls the ErrorMessage constructor with the message and the line number of the ASTNode
+    protected ErrorMessage ASTNode.error(String message) {
+        return new ErrorMessage(message, getLine(getStart()));
+    }
+
+    // The errors are represented by a collection attribute Program.errors that is a set of error messages
+    coll Set<ErrorMessage> Program.errors() 
+        [new TreeSet<ErrorMessage>()] // Initial value of the collection
+        with add // Contributions are added with the method add on TreeSet
+        root Program; // restricts the traversal to the subtree rooted by the Program node containing the errors attribute
+
+    // Inherited attribute to access the root of the AST
+    inh Program ASTNode.program();
+    eq Program.getChild().program() = this;
+}
+
+aspect ErrorContributions {
+    /*
+        The error contributions follow some simple rules:
+        They specify:
+        - the error message to be added (by creating an instance of ErrorMessage)
+        - when to add this error message
+        - what collection attribute it should be added to as well as which node that contains it
+    */
+
+    // Declaration before use not respected
+    IdUse contributes error("symbol '" + getID() + "' is not declared")
+        when decl().isUnknown()
+        to Program.errors() for program();
+
+    // Multiple declarations of the same variable
+    IdUse contributes error("symbol '" + getID() + "' is already declared!")
+        when isMultiDeclared()
+        to Program.errors() for program();
+
+    
+}
