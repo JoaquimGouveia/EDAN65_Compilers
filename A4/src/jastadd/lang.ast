@@ -1,7 +1,7 @@
 Program ::= FuncDecl*;
 
 FuncDecl ::= IdDecl Param* Block;
-Param ::= <ID>;
+Param ::= IdDecl;
 Block : Stmt ::= Stmt*;
 IdDecl ::= <ID>;
 
@@ -33,6 +33,11 @@ Neg : Expr ::= Expr;
 Numeral : Expr ::= <NUMERAL>;
 IdUse : Expr ::= <ID>; 
 UnknownDecl: IdDecl;
+
+abstract Type;
+IntType: Type;
+BoolType: Type;
+UnknownType: Type;
 
 
 

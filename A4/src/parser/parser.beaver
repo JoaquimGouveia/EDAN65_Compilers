@@ -59,7 +59,7 @@ param_list =
             | param_list.a COMMA param.b {: return a.add(b); :} // dont want print(, 4)
             ;
 
-param = INT ID.a {: return new Param(a); :};
+param = INT id_decl.a {: return new Param(a); :};
 
 opt_stmt_list =
 	        stmt_list.l {: return l; :}

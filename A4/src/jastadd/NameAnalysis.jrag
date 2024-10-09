@@ -6,7 +6,46 @@ aspect NameAnalysis {
     inh IdDecl IdUse.lookup(String name);
 
     // Easiest way to understand equation for inherited attribute is: "This is the value I want to give to my children."
-    eq Program.getChild().lookup(String name) = unknownDecl();
+    eq Program.getFuncDecl(int index).lookup(String name)  {
+        for (FuncDecl f : getFuncDeclList()) {
+            if (f.getIdDecl().getID().equals(name)) {
+                return f.getIdDecl();
+            }
+        }
+        for (FuncDecl f : predefinedFunctions()) {
+            if (f.getIdDecl().getID().equals(name)) {
+                return f.getIdDecl();
+            }
+        }
+        return unknownDecl();
+    }
+
+
+    /*-------------------------------FuncDecl-----------------------------*/
+    inh IdDecl FuncDecl.lookup(String name);
+    eq FuncDecl.getBlock().lookup(String name) {
+        IdDecl decl = localLookup(name);
+        return !decl.isUnknown() ? decl : lookup(name);
+    }
+
+    eq FuncDecl.getParam(int index).lookup(String name) {
+        IdDecl decl = localLookup(name);
+        return decl.getID().equals(name) ? decl : unknownDecl();
+    }
+
+    // Introduce this localLookup to find variable declarations in method parameters
+    syn IdDecl FuncDecl.localLookup(String name) {
+        IdDecl decl;
+        for(Param p : getParamList()) {
+            decl = p.getIdDecl();
+            if (decl.getID().equals(name)) {
+                return decl;
+            }
+        }
+        return unknownDecl();
+    }
+
+    /*-------------------------------FuncCall-----------------------------*
 
 
 
@@ -33,6 +72,7 @@ aspect NameAnalysis {
     syn IdDecl Stmt.localLookup(String name) = unknownDecl();
     eq VarDeclStmt.localLookup(String name) = getIdDecl().getID().equals(name) ? getIdDecl() : unknownDecl();
 
+
     /*-------------------------------Identify same name declarations-----------------------------*/
     // Introduce an inherited attribute lookup(String name) in the IdDecl class.
     inh IdDecl IdDecl.lookup(String name);
@@ -43,8 +83,9 @@ aspect NameAnalysis {
     // Identify circular definitions in variable assignments
     syn boolean IdUse.isCircular() = inExprOf(decl());
     inh boolean IdUse.inExprOf(IdDecl decl);
+    inh boolean VarDeclStmt.inExprOf(IdDecl decl);
+    eq VarDeclStmt.getExpr().inExprOf(IdDecl decl) 
+         = getIdDecl() == decl || inExprOf(decl);
     inh boolean VarAssignStmt.inExprOf(IdDecl decl);
-    eq VarAssignStmt.getExpression().inExprOf(IdDecl del) = {
-
-    } 
+    eq Program.getChild().inExprOf(IdDecl decl) = false;
 }*/

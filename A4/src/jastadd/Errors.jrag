@@ -26,10 +26,8 @@ aspect Errors {
     }
 
     // The errors are represented by a collection attribute Program.errors that is a set of error messages
-    coll Set<ErrorMessage> Program.errors() 
-        [new TreeSet<ErrorMessage>()] // Initial value of the collection
-        with add // Contributions are added with the method add on TreeSet
-        root Program; // restricts the traversal to the subtree rooted by the Program node containing the errors attribute
+    coll Set<ErrorMessage> Program.errors() [new TreeSet<ErrorMessage>()] with add root Program;
+    
 
     // Inherited attribute to access the root of the AST
     inh Program ASTNode.program();
@@ -51,9 +49,12 @@ aspect ErrorContributions {
         to Program.errors() for program();
 
     // Multiple declarations of the same variable
-    IdUse contributes error("symbol '" + getID() + "' is already declared!")
+    IdDecl contributes error("symbol '" + getID() + "' is already declared!")
         when isMultiDeclared()
         to Program.errors() for program();
 
-    
+    /* Circular definitions
+    IdUse contributes error("the definition of symbol '" + getID() + "' is circular")
+        when isCircular()
+        to Program.errors() for program();*/
 }
