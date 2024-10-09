@@ -45,9 +45,16 @@ aspect NameAnalysis {
         return unknownDecl();
     }
 
-    /*-------------------------------FuncCall-----------------------------*
+    inh FuncDecl IdDecl.function();
+    eq FuncDecl.getIdDecl().function() = this;
+
+    syn FuncDecl IdUse.function() = decl().function();
 
 
+
+    /*-------------------------------FuncCall-----------------------------*/
+
+    syn boolean FunctionCall.isSameNumber() = getIdUse().function().getNumParam() == getNumExpr();
 
     /*-------------------------------BLOCK-----------------------------*/ 
     inh IdDecl Block.lookup(String name);
