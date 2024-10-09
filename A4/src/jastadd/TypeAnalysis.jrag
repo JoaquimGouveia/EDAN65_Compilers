@@ -1,9 +1,10 @@
 aspect TypeAnalysis {
+    // Root Attribute Pattern
     syn nta Type Program.unknownType() = new UnknownType();
     inh Type ASTNode.unknownType();
-    eq Program.getChild().unknownType() = unkownType();
+    eq Program.getChild().unknownType() = unknownType();
 
-    syn nta Type Program.booleanType() = new BooleanType();
+    syn nta Type Program.booleanType() = new BoolType();
     inh Type ASTNode.booleanType();
     eq Program.getChild().booleanType() = booleanType();
 
@@ -14,17 +15,16 @@ aspect TypeAnalysis {
     syn boolean Type.isUnknown() = false;
     eq UnknownType.isUnknown() = true;
 
-
     /*
-There are three types in SimpliC: integer, boolean
-and the unknown type. Variables, parameters and the
-return type of a function can only be of integer
-type. This limitation exists to make the assignment easier.
-Arithmetic expressions are of type integerand boolean expressions
-are of type boolean. The statements if and while require
-the condition to be of type boolean. 
-The unknown type is assigned to variable uses
-that refer to unknown names
+    There are three types in SimpliC: integer, boolean
+    and the unknown type. Variables, parameters and the
+    return type of a function can only be of integer
+    type. This limitation exists to make the assignment easier.
+    Arithmetic expressions are of type integerand boolean expressions
+    are of type boolean. The statements if and while require
+    the condition to be of type boolean. 
+    The unknown type is assigned to variable uses
+    that refer to unknown names
     */
 
     /*
@@ -35,10 +35,12 @@ that refer to unknown names
     inh Type Expr.expectedType();
     eq VarDeclStmt.getExpr().expectedType() = this.intType();
     eq VarAssignStmt.getExpression().expectedType() = this.intType();
+    eq VarAssignStmt.getIdUse().expectedType() = this.intType();
     eq FunctionCall.getExpr(int i).expectedType() = this.intType();
     eq ReturnStmt.getExpr().expectedType() = this.intType();
     eq WhileStmt.getExpr().expectedType() = this.booleanType();
     eq IfStmt.getExpr().expectedType() = this.booleanType();
+    eq Expr.getChild().type() = intType();
 
     /*
     * The type an expression has is determined by what kind of expression it is.
@@ -55,4 +57,7 @@ that refer to unknown names
     
     syn Type IdDecl.type() = this.intType();
     eq UnknownDecl.type() = this.unknownType();
+
+    syn boolean Type.compatibleType(Type other) = this.equals(other) || other.isUnknown();
+    eq UnknownType.compatibleType(Type other) = true;
 }
