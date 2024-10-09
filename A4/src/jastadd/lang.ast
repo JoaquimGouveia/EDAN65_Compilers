@@ -7,14 +7,14 @@ IdDecl ::= <ID>;
 
 abstract Stmt;
 VarDeclStmt : Stmt ::= IdDecl [Expr];
-VarAssignStmt : Stmt ::= IdUse:Expr Expression:Expr;
+VarAssignStmt : Stmt ::= IdUse Expression:Expr;
 FunctionCallStmt: Stmt ::= FunctionCall:Expr;
 ReturnStmt: Stmt ::= Expr;
 WhileStmt: Stmt ::= Expr Block;
 IfStmt: Stmt ::= Expr ThenBlock:Block [ElseBlock:Block];
 
 abstract Expr;
-FunctionCall : Expr ::= IdUse:Expr Expr*;
+FunctionCall : Expr ::= IdUse Expr*;
 
 abstract BinOp : Expr ::= Left:Expr Right:Expr;
 Add : BinOp;

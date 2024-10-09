@@ -62,7 +62,6 @@ aspect TypeAnalysis {
     syn Type IdDecl.type() = this.intType();
     eq UnknownDecl.type() = this.unknownType();
     
-
     syn boolean Type.compatibleType(Type other) = this.equals(other) || other.isUnknown();
     eq UnknownType.compatibleType(Type other) = true;
 }

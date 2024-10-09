@@ -77,6 +77,20 @@ aspect NameAnalysis {
     // Introduce an inherited attribute lookup(String name) in the IdDecl class.
     inh IdDecl IdDecl.lookup(String name);
     syn boolean IdDecl.isMultiDeclared() = lookup(getID()) != this;
+
+    /*--------------------------------Identify if IdDecl is variable or function---------------------------------------*/
+
+    inh boolean IdDecl.isFunction();
+    inh boolean IdDecl.isVariable();
+
+    eq FuncDecl.getIdDecl().isFunction() = true;
+    eq FuncDecl.getIdDecl().isVariable() = false;
+    eq VarDeclStmt.getIdDecl().isVariable() = true;
+    eq VarDeclStmt.getIdDecl().isFunction() = false;
+    eq Param.getIdDecl().isFunction() = false;
+    eq Param.getIdDecl().isVariable() = true;
+    eq Program.unknownDecl().isFunction() = false;
+    eq Program.unknownDecl().isVariable() = false;
 }
 
 /*aspect CircularDefinitions {

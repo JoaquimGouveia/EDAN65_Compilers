@@ -66,4 +66,15 @@ aspect ErrorContributions {
     Expr contributes error("type mismatch: expected " + expectedType() + " but found " + type())
         when !expectedType().compatibleType(type())
         to Program.errors() for program();
+
+    // This error arises when a function call refers to a variable
+    FunctionCall contributes error("symbol '" + getIdUse() + "' is not a function")
+        when !getIdUse().decl().isFunction() && getIdUse().decl() != unknownDecl()
+        to Program.errors() for program();
+
+    // This error arises when a variable assign statement tries to assign a value to a function
+    VarAssignStmt contributes error("symbol '" + getIdUse() + "' is a function")
+        when !getIdUse().decl().isVariable() && getIdUse().decl() != unknownDecl()
+        to Program.errors() for program();
+    
 }
