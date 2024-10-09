@@ -37,10 +37,14 @@ aspect TypeAnalysis {
     eq VarAssignStmt.getExpression().expectedType() = this.intType();
     eq VarAssignStmt.getIdUse().expectedType() = this.intType();
     eq FunctionCall.getExpr(int i).expectedType() = this.intType();
+    /*
+    Skumt att man inte behöver lägga till FunctionCall.getIdUse().expectedType() = this.intType();
+    */
+    eq FunctionCallStmt.getFunctionCall().expectedType() = this.intType();
     eq ReturnStmt.getExpr().expectedType() = this.intType();
     eq WhileStmt.getExpr().expectedType() = this.booleanType();
     eq IfStmt.getExpr().expectedType() = this.booleanType();
-    eq Expr.getChild().type() = intType();
+    eq Expr.getChild().expectedType() = this.intType();
 
     /*
     * The type an expression has is determined by what kind of expression it is.
@@ -57,6 +61,7 @@ aspect TypeAnalysis {
     
     syn Type IdDecl.type() = this.intType();
     eq UnknownDecl.type() = this.unknownType();
+    
 
     syn boolean Type.compatibleType(Type other) = this.equals(other) || other.isUnknown();
     eq UnknownType.compatibleType(Type other) = true;
