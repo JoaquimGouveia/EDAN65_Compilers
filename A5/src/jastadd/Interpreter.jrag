@@ -8,14 +8,15 @@ aspect Interpreter {
 
     public void Program.eval() {
 
-        IdUse main = new IdUse("main");
-        FuncDecl mainDecl = main.function();
-        if (!mainDecl.getIdDecl().isUnknown()) {
-            ActivationRecord actrec = new ActivationRecord();
-            System.out.println(mainDecl.eval(actrec));
-        } else {
-            throw new RuntimeException();
+        ActivationRecord actrec = new ActivationRecord();
+
+        for (FuncDecl func : getFuncDecls()){
+            if (func.getIdDecl().getID().equals("main")){
+                func.eval(actrec);
+            }
         }
+
+        throw new RuntimeException();
         
     }
 

@@ -116,5 +116,5 @@ clean.dependsOn 'cleanJarfile'
 
 task cleanJarfile(type: Delete) {
   description 'Remove generated jar file'
-  delete file('compiler.jar')
+  delete file('interpreter.jar')
 }
