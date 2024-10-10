@@ -11,20 +11,27 @@ aspect Interpreter {
         IdDecl main = lookup("main");
         
         if (!main.isUnknown()){
-            ActivationRecord ar = new ActivationRecord();
-            main.eval(ar);
+            ActivationRecord actrec = new ActivationRecord();
+            main.eval(actrec);
         } else {
-            throw new RuntimeException();  
+            throw new RuntimeException();
         }
         
     }
     public int FunctionDecl.eval(ActivationRecord actrec){
-        throw new RuntimeException();
+        for (Stmt stmt : getBlock().getStmtList()) {
+            stmt.eval(actrec);
+        } 
     }
     public void Stmt.eval(ActivationRecord actrec){
-        throw new RuntimeException();
+        if (this == VarDeclStmt) {
+            getExpr().eval(actrec);
+        } else {
+            throw new RuntimeException();
+        }
     }
     public int Expr.eval(ActivationRecord actrec){
+        return 
         throw new RuntimeException();
     }
     
