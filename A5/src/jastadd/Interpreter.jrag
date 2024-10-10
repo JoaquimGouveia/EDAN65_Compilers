@@ -1,11 +1,22 @@
 aspect Interpreter {
 
-    class ActivationRecord{
+    class ActivationRecord {
+        public ActivationRecord() {
 
+        }
     }
 
     public void Program.eval() {
-        throw new RuntimeException();
+
+        IdDecl main = lookup("main");
+        
+        if (!main.isUnknown()){
+            ActivationRecord ar = new ActivationRecord();
+            main.eval(ar);
+        } else {
+            throw new RuntimeException();  
+        }
+        
     }
     public int FunctionDecl.eval(ActivationRecord actrec){
         throw new RuntimeException();
