@@ -1,8 +1,0 @@
-aspect ActivationRecord {
-
-    public void Program.eval();
-    public int FunctionDecl.eval(ActivationRecord actrec);
-    public void Stmt.eval(ActivationRecord actrec);
-    public int Expr.eval(ActivationRecord actrec);
-    
-}
