@@ -8,20 +8,22 @@ aspect Interpreter {
 
     public void Program.eval() {
 
-        IdDecl main = lookup("main");
-        
-        if (!main.isUnknown()){
+        IdUse main = new IdUse("main");
+        FuncDecl mainDecl = main.function();
+        if (!mainDecl.getIdDecl().isUnknown()) {
             ActivationRecord actrec = new ActivationRecord();
-            main.eval(actrec);
+            System.out.println(mainDecl.eval(actrec));
         } else {
             throw new RuntimeException();
         }
         
     }
-    public int FunctionDecl.eval(ActivationRecord actrec){
+
+    public int FuncDecl.eval(ActivationRecord actrec){
         for (Stmt stmt : getBlock().getStmtList()) {
             stmt.eval(actrec);
         } 
+        return 1;
     }
 
     public void Stmt.eval(ActivationRecord actrec){
@@ -31,6 +33,8 @@ aspect Interpreter {
     public void VarDeclStmt.eval(ActivationRecord actrec){
         getExpr().eval(actrec);
     }
+
+    /*---------------------------------Expr---------------------------------*/
 
     public int Expr.eval(ActivationRecord actrec){
         throw new RuntimeException();
@@ -52,12 +56,16 @@ aspect Interpreter {
         return getLeft().eval(actrec) - getRight().eval(actrec);
     }
 
+    public int Mod.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) % getRight().eval(actrec);
+    }
+
     public int Eq.eval(ActivationRecord actrec) {
-        return getLeft().eval(actrec) == getRight().eval(actrec);
+        return getLeft().eval(actrec) == getRight().eval(actrec) ? 1 : 0;
     }
 
     public int Neq.eval(ActivationRecord actrec) {
-        return getLeft().eval(actrec) /= getRight().eval(actrec);
+        return getLeft().eval(actrec) != getRight().eval(actrec) ? 1 : 0;
     }
 
     public int Lt.eval(ActivationRecord actrec) {
@@ -68,10 +76,6 @@ aspect Interpreter {
         return getLeft().eval(actrec) > getRight().eval(actrec) ? 1 : 0;
     }
 
-    public int Mod.eval(ActivationRecord actrec) {
-        return getLeft().eval(actrec) % getRight().eval(actrec) ? 1 : 0;
-    }
-
     public int Le.eval(ActivationRecord actrec) {
         return getLeft().eval(actrec) <= getRight().eval(actrec) ? 1 : 0;
     }
@@ -80,7 +84,7 @@ aspect Interpreter {
         return getLeft().eval(actrec) >= getRight().eval(actrec) ? 1 : 0;
     }
 
-    public int Neq.eval(ActivationRecord actrec) {
+    public int Neg.eval(ActivationRecord actrec) {
         return -(getExpr().eval(actrec));
     }
 
