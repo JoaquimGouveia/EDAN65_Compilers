@@ -32,10 +32,59 @@ aspect Interpreter {
         getExpr().eval(actrec);
     }
 
-    /*-------------------------------Expr-----------------------------*/
     public int Expr.eval(ActivationRecord actrec){
         throw new RuntimeException();
     }
+
+    public int Add.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) + getRight().eval(actrec);
+    }
+
+    public int Mul.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) * getRight().eval(actrec);
+    }
     
-    
+    public int Div.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) / getRight().eval(actrec);
+    }
+
+    public int Sub.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) - getRight().eval(actrec);
+    }
+
+    public int Eq.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) == getRight().eval(actrec);
+    }
+
+    public int Neq.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) /= getRight().eval(actrec);
+    }
+
+    public int Lt.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) < getRight().eval(actrec) ? 1 : 0;
+    }
+
+    public int Gt.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) > getRight().eval(actrec) ? 1 : 0;
+    }
+
+    public int Mod.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) % getRight().eval(actrec) ? 1 : 0;
+    }
+
+    public int Le.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) <= getRight().eval(actrec) ? 1 : 0;
+    }
+
+    public int Ge.eval(ActivationRecord actrec) {
+        return getLeft().eval(actrec) >= getRight().eval(actrec) ? 1 : 0;
+    }
+
+    public int Neq.eval(ActivationRecord actrec) {
+        return -(getExpr().eval(actrec));
+    }
+
+    public int Numeral.eval(ActivationRecord actrec) {
+        return Integer.parseInt(getNUMERAL());
+    }
 }
