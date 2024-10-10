@@ -1,0 +1,3 @@
+Error at line 3: symbol 'b' is not declared
+Error at line 6: symbol 'd' is not declared
+Error at line 9: symbol 'e' is already declared!

@@ -1,0 +1,38 @@
+Program
+  List
+    FuncDecl
+      IdDecl ID="gcdFirst"
+      List
+        Param
+          IdDecl ID="a"
+        Param
+          IdDecl ID="b"
+      Block
+        List
+          WhileStmt
+            Neq
+              IdUse ID="a"
+              IdUse ID="b"
+            Block
+              List
+                IfStmt
+                  Gt
+                    IdUse ID="a"
+                    IdUse ID="b"
+                  Block
+                    List
+                      VarAssignStmt
+                        IdUse ID="a"
+                        Sub
+                          IdUse ID="a"
+                          IdUse ID="b"
+                  Opt
+                    Block
+                      List
+                        VarAssignStmt
+                          IdUse ID="b"
+                          Sub
+                            IdUse ID="b"
+                            IdUse ID="a"
+          ReturnStmt
+            IdUse ID="a"

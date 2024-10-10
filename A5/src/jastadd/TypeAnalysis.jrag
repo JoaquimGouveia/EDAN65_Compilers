@@ -1,0 +1,67 @@
+aspect TypeAnalysis {
+    // Root Attribute Pattern
+    syn nta Type Program.unknownType() = new UnknownType();
+    inh Type ASTNode.unknownType();
+    eq Program.getChild().unknownType() = unknownType();
+
+    syn nta Type Program.booleanType() = new BoolType();
+    inh Type ASTNode.booleanType();
+    eq Program.getChild().booleanType() = booleanType();
+
+    syn nta Type Program.intType() = new IntType();
+    inh Type ASTNode.intType();
+    eq Program.getChild().intType() = intType();
+
+    syn boolean Type.isUnknown() = false;
+    eq UnknownType.isUnknown() = true;
+
+    /*
+    There are three types in SimpliC: integer, boolean
+    and the unknown type. Variables, parameters and the
+    return type of a function can only be of integer
+    type. This limitation exists to make the assignment easier.
+    Arithmetic expressions are of type integerand boolean expressions
+    are of type boolean. The statements if and while require
+    the condition to be of type boolean. 
+    The unknown type is assigned to variable uses
+    that refer to unknown names
+    */
+
+    /*
+    * The expected type of an expression is determined by the context in which 
+    * the expression is used. This means that the expected type attribute will
+    * be inherited from the parent node to the child node.
+    */
+    inh Type Expr.expectedType();
+    eq VarDeclStmt.getExpr().expectedType() = this.intType();
+    eq VarAssignStmt.getExpression().expectedType() = this.intType();
+    eq VarAssignStmt.getIdUse().expectedType() = this.intType();
+    eq FunctionCall.getExpr(int i).expectedType() = this.intType();
+    /*
+    Skumt att man inte behöver lägga till FunctionCall.getIdUse().expectedType() = this.intType();
+    */
+    eq FunctionCallStmt.getFunctionCall().expectedType() = this.intType();
+    eq ReturnStmt.getExpr().expectedType() = this.intType();
+    eq WhileStmt.getExpr().expectedType() = this.booleanType();
+    eq IfStmt.getExpr().expectedType() = this.booleanType();
+    eq Expr.getChild().expectedType() = this.intType();
+
+    /*
+    * The type an expression has is determined by what kind of expression it is.
+    * Which means that here it should be enough to add a synthesized attribute 
+    * for each kind of expression.
+    */
+    syn Type Expr.type() = this.intType();
+    eq Eq.type()  = this.booleanType();
+    eq Neq.type() = this.booleanType();
+    eq Lt.type() = this.booleanType();
+    eq Gt.type() = this.booleanType();
+    eq Le.type() = this.booleanType();
+    eq Ge.type() = this.booleanType();
+    
+    syn Type IdDecl.type() = this.intType();
+    eq UnknownDecl.type() = this.unknownType();
+    
+    syn boolean Type.compatibleType(Type other) = this.equals(other) || other.isUnknown();
+    eq UnknownType.compatibleType(Type other) = true;
+}

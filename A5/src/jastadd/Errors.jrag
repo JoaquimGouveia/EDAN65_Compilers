@@ -1,0 +1,90 @@
+import java.util.Set;
+import java.util.TreeSet;
+
+aspect Errors {
+    public class ErrorMessage implements Comparable<ErrorMessage> {
+        protected final String message;
+        protected final int lineNumber;
+        public ErrorMessage(String message, int lineNumber) {
+            this.message = message;
+            this.lineNumber = lineNumber;
+        }
+        public int compareTo(ErrorMessage other) {
+            if (lineNumber == other.lineNumber) {
+                return message.compareTo(other.message);
+            }
+            return Integer.compare(lineNumber, other.lineNumber);
+        }
+        public String toString() {
+            return "Error at line " + lineNumber + ": " + message;
+        }
+    }
+
+    // calls the ErrorMessage constructor with the message and the line number of the ASTNode
+    protected ErrorMessage ASTNode.error(String message) {
+        return new ErrorMessage(message, getLine(getStart()));
+    }
+
+    // The errors are represented by a collection attribute Program.errors that is a set of error messages
+    coll Set<ErrorMessage> Program.errors() [new TreeSet<ErrorMessage>()] with add root Program;
+    
+
+    // Inherited attribute to access the root of the AST
+    inh Program ASTNode.program();
+    eq Program.getChild().program() = this;
+}
+
+aspect ErrorContributions {
+    /*
+        The error contributions follow some simple rules:
+        They specify:
+        - the error message to be added (by creating an instance of ErrorMessage)
+        - when to add this error message
+        - what collection attribute it should be added to as well as which node that contains it
+    */
+
+    // Declaration before use not respected
+    IdUse contributes error("symbol '" + getID() + "' is not declared")
+        when decl().isUnknown()
+        to Program.errors() for program();
+
+    // Multiple declarations of the same variable
+    IdDecl contributes error("symbol '" + getID() + "' is already declared!")
+        when isMultiDeclared()
+        to Program.errors() for program();
+
+    /* Circular definitions
+    IdUse contributes error("the definition of symbol '" + getID() + "' is circular")
+        when isCircular()
+        to Program.errors() for program();*/
+
+    // Type mismatch
+    /*
+    * This error message arises from when an expression of a certain type
+    * is used in a context which expects another type.
+    */
+    Expr contributes error("type mismatch: expected " + expectedType() + " but found " + type())
+        when !expectedType().compatibleType(type())
+        to Program.errors() for program();
+
+    // This error arises when a function call refers to a variable
+    FunctionCall contributes error("symbol '" + getIdUse() + "' is not a function")
+        when !getIdUse().decl().isFunction() && getIdUse().decl() != unknownDecl()
+        to Program.errors() for program();
+
+    // This error arises when a variable assign statement tries to assign a value to a function
+    VarAssignStmt contributes error("symbol '" + getIdUse() + "' is a function")
+        when !getIdUse().decl().isVariable() && getIdUse().decl() != unknownDecl()
+        to Program.errors() for program();
+
+    // A FunctionCall must refer to a valid function declaration
+    FunctionCall contributes error("symbol '" + getIdUse() + "' is not a function or does not resolve to a function declaration")
+        when !getIdUse().decl().isFunction() && getIdUse().decl() != unknownDecl()
+        to Program.errors() for program();
+
+    // This error arises if a FunctionCall has the wrong number of arguments
+    FunctionCall contributes error("function '" + getIdUse() + "' expects " + getIdUse().function().getNumParam() + " arguments but found " + getNumExpr())
+        when !isSameNumber()
+        to Program.errors() for program();
+    
+}

@@ -1,0 +1,138 @@
+%class "LangParser";
+%package "lang.ast";
+
+%embed {:
+    static public class SyntaxError extends RuntimeException { public SyntaxError(String msg) {super(msg);}}
+    // Disable syntax error recovery
+    protected void recoverFromError(Symbol token, TokenStream in) {
+        throw new SyntaxError("Cannot recover from the syntax error");
+    }
+:};
+
+%terminals ID, INT, IF, ELSE, ADD, SUB, MUL, DIV, MOD, EQ, NEQ, LT, LE, GT, GE, LPAREN, RPAREN, LBRACE, RBRACE, SEMICOLON, COMMA, ASSIGN, WHILE, RETURN, NUMERAL;
+
+%typeof program = "Program";
+%typeof func_decl_list = "List";
+%typeof func_decl = "FuncDecl";
+%typeof block = "Block";
+%typeof id_decl = "IdDecl";
+%typeof id_use = "IdUse";
+%typeof stmt_list = "List";
+%typeof stmt = "Stmt";
+%typeof var_decl_stmt = "VarDeclStmt";
+%typeof var_assign_stmt = "VarAssignStmt";
+%typeof opt_stmt_list = "List";
+%typeof expr = "Expr";
+%typeof arithmetic_expr = "Expr";
+%typeof term = "Expr";
+%typeof factor = "Expr";
+%typeof opt_arg_list = "List";
+%typeof func_call_stmt = "FunctionCallStmt";
+%typeof func_call = "FunctionCall";
+%typeof arg_list = "List";
+%typeof param = "Param";
+%typeof param_list = "List";
+%typeof opt_param_list = "List";
+%typeof return_stmt = "ReturnStmt";
+%typeof while_stmt = "WhileStmt";
+%typeof if_stmt = "IfStmt";
+
+%goal program;
+
+program = func_decl_list.a {: return new Program(a); :};
+
+func_decl_list = func_decl.a {: return new List().add(a); :}
+                | func_decl_list.a func_decl.b {: return a.add(b); :}
+                ;
+
+func_decl = INT id_decl.a LPAREN opt_param_list.b RPAREN block.c {: return new FuncDecl(a, b,c); :};
+
+block = LBRACE opt_stmt_list.a RBRACE {: return new Block(a); :};
+
+opt_param_list = 
+                param_list.a {: return a; :}
+                | {: return new List(); :}
+                ;
+
+param_list = 
+            param.a {: return new List().add(a); :}
+            | param_list.a COMMA param.b {: return a.add(b); :} // dont want print(, 4)
+            ;
+
+param = INT id_decl.a {: return new Param(a); :};
+
+opt_stmt_list =
+	        stmt_list.l {: return l; :}
+	        |	{: return new List(); :}
+            ;
+
+stmt_list = 
+            stmt.a {: return new List().add(a); :}
+            | stmt_list.a stmt.b {: return a.add(b); :}
+            ;
+
+stmt = var_decl_stmt.a {: return a; :}
+        | var_assign_stmt.a {: return a; :}
+        | func_call_stmt.a {: return a; :}
+        | return_stmt.a {: return a; :}
+        | while_stmt.a {: return a; :}
+        | if_stmt.a {: return a; :}
+        | block.a {: return a; :}
+        ;
+
+if_stmt = IF LPAREN expr.a RPAREN block.b {: return new IfStmt(a, b, new Opt()); :}
+            | IF LPAREN expr.a RPAREN block.b ELSE block.c {: return new IfStmt(a, b, new Opt(c)); :}
+            ;
+
+return_stmt = RETURN expr.a SEMICOLON {: return new ReturnStmt(a); :};
+
+while_stmt = WHILE LPAREN expr.a RPAREN block.b  {: return new WhileStmt(a,b); :};
+
+opt_arg_list = arg_list.a {: return a; :}
+             | {: return new List(); :}
+             ;
+
+arg_list = expr.a {: return new List().add(a); :}
+            | arg_list.a COMMA expr.b {: return a.add(b); :}
+            ;
+
+var_decl_stmt = INT id_decl.b SEMICOLON {: return new VarDeclStmt(b, new Opt()); :}
+                | INT id_decl.b ASSIGN expr.d SEMICOLON {: return new VarDeclStmt(b, new Opt(d)); :}
+                ;
+
+var_assign_stmt = id_use.a ASSIGN expr.b SEMICOLON {: return new VarAssignStmt(a, b); :};
+
+func_call_stmt = expr.a SEMICOLON {: return new FunctionCallStmt(a); :};
+
+
+expr = arithmetic_expr.a EQ arithmetic_expr.b {: return new Eq(a, b); :}
+                    | arithmetic_expr.a NEQ arithmetic_expr.b {: return new Neq(a, b); :}
+                    | arithmetic_expr.a GT arithmetic_expr.b {: return new Gt(a, b);:}
+                    | arithmetic_expr.a LT arithmetic_expr.b {: return new Lt(a, b); :}
+                    | arithmetic_expr.a GE arithmetic_expr.b {: return new Ge(a, b); :}
+                    | arithmetic_expr.a LE arithmetic_expr.b {: return new Le(a, b); :}
+                    | arithmetic_expr.a {: return a; :}
+                    ;
+
+arithmetic_expr = arithmetic_expr.a ADD term.b {: return new Add(a, b); :}
+                | arithmetic_expr.a SUB term.b {: return new Sub(a, b); :}
+                | term.a {: return a; :}
+                ;
+
+term = term.a MUL factor.b {: return new Mul(a, b); :}
+       | term.a DIV factor.b {: return new Div(a, b); :}
+       | term.a MOD factor.b {: return new Mod(a, b); :}
+       | factor.a {: return a; :}
+       ;
+
+factor = numeral
+        | id_use
+        | LPAREN expr.a RPAREN {: return a; :}
+        | func_call.a {: return a; :}
+        | SUB factor.a {: return new Neg(a); :}
+        ;
+
+func_call = id_use.a LPAREN opt_arg_list.b RPAREN {: return new FunctionCall(a, b); :};
+id_decl = ID.id {: return new IdDecl(id); :};
+id_use = ID.id {: return new IdUse(id); :};
+numeral = NUMERAL.num {: return new Numeral(num); :};
