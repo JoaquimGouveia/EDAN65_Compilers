@@ -23,15 +23,16 @@ aspect Interpreter {
             stmt.eval(actrec);
         } 
     }
+
     public void Stmt.eval(ActivationRecord actrec){
-        if (this == VarDeclStmt) {
-            getExpr().eval(actrec);
-        } else {
-            throw new RuntimeException();
-        }
+        throw new RuntimeException();
     }
+
+    public void VarDeclStmt.eval(ActivationRecord actrec){
+        getExpr().eval(actrec);
+    }
+
     public int Expr.eval(ActivationRecord actrec){
-        return 
         throw new RuntimeException();
     }
     
