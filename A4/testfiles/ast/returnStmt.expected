@@ -3,7 +3,8 @@ Program
     FuncDecl
       IdDecl ID="a"
       List
-        Param ID="b"
+        Param
+          IdDecl ID="b"
       Block
         List
           ReturnStmt

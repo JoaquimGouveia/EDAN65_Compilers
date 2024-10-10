@@ -3,8 +3,10 @@ Program
     FuncDecl
       IdDecl ID="gcdFirst"
       List
-        Param ID="a"
-        Param ID="b"
+        Param
+          IdDecl ID="a"
+        Param
+          IdDecl ID="b"
       Block
         List
           WhileStmt

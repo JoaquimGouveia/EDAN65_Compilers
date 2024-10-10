@@ -6,7 +6,7 @@ aspect NameAnalysis {
     inh IdDecl IdUse.lookup(String name);
 
     // Easiest way to understand equation for inherited attribute is: "This is the value I want to give to my children."
-    eq Program.getFuncDecl(int index).lookup(String name)  {
+    eq Program.getFuncDecl(int index).lookup(String name) {
         for (FuncDecl f : getFuncDeclList()) {
             if (f.getIdDecl().getID().equals(name)) {
                 return f.getIdDecl();
@@ -19,7 +19,6 @@ aspect NameAnalysis {
         }
         return unknownDecl();
     }
-
 
     /*-------------------------------FuncDecl-----------------------------*/
     inh IdDecl FuncDecl.lookup(String name);
@@ -49,8 +48,6 @@ aspect NameAnalysis {
     eq FuncDecl.getIdDecl().function() = this;
 
     syn FuncDecl IdUse.function() = decl().function();
-
-
 
     /*-------------------------------FuncCall-----------------------------*/
 
@@ -94,7 +91,7 @@ aspect NameAnalysis {
     eq FuncDecl.getIdDecl().isVariable() = false;
     eq VarDeclStmt.getIdDecl().isVariable() = true;
     eq VarDeclStmt.getIdDecl().isFunction() = false;
-    eq Param.getIdDecl().isFunction() = false;
+    eq Param.getIdDecl().isFunction() = false; // Maybe change Param to just <ID> in the grammar?
     eq Param.getIdDecl().isVariable() = true;
     eq Program.unknownDecl().isFunction() = false;
     eq Program.unknownDecl().isVariable() = false;
