@@ -29,11 +29,15 @@ aspect Interpreter {
     }
 
     public void Stmt.eval(ActivationRecord actrec){
-        throw new RuntimeException();
+        System.out.println("Stmt");
     }
 
     public void VarDeclStmt.eval(ActivationRecord actrec){
         System.out.println(getExpr().eval(actrec)); //REMOVE SYSTEM.OUT.PRINTLN
+    }
+
+    public void FunctionCallStmt.eval(ActivationRecord actrec){
+        getFunctionCall().eval(actrec);
     }
 
     public int FunctionCall.eval(ActivationRecord actrec){
@@ -62,6 +66,7 @@ aspect Interpreter {
     /*---------------------------------Expr---------------------------------*/
 
     public int Expr.eval(ActivationRecord actrec){
+        System.out.println("Expr");
         throw new RuntimeException();
     }
 
