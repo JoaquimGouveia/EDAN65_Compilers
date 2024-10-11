@@ -9,15 +9,14 @@ aspect Interpreter {
     public void Program.eval() {
 
         ActivationRecord actrec = new ActivationRecord();
-
+        IdDecl main = unknownDecl();
         for (FuncDecl func : getFuncDecls()){
             if (func.getIdDecl().getID().equals("main")){
+                main = func.getIdDecl();
                 func.eval(actrec);
             }
         }
-
-        throw new RuntimeException();
-        
+        if (main.isUnknown()) throw new RuntimeException();
     }
 
     public int FuncDecl.eval(ActivationRecord actrec){
@@ -32,7 +31,13 @@ aspect Interpreter {
     }
 
     public void VarDeclStmt.eval(ActivationRecord actrec){
-        getExpr().eval(actrec);
+        System.out.println(getExpr().eval(actrec)); //REMOVE SYSTEM.OUT.PRINTLN
+    }
+
+    public void FunctionCallStmt.eval(ActivationRecord actrec){
+        if (getFunctionCall().getIdUse().getID().equals("print")){
+            System.out.println(getFunctionCall().getExpr(0).eval(actrec)); //REMOVE SYSTEM.OUT.PRINTLN
+        }
     }
 
     /*---------------------------------Expr---------------------------------*/
