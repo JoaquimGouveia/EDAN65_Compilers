@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 aspect Interpreter {
 
     class ActivationRecord {
@@ -34,10 +36,27 @@ aspect Interpreter {
         System.out.println(getExpr().eval(actrec)); //REMOVE SYSTEM.OUT.PRINTLN
     }
 
-    public void FunctionCallStmt.eval(ActivationRecord actrec){
-        if (getFunctionCall().getIdUse().getID().equals("print")){
-            System.out.println(getFunctionCall().getExpr(0).eval(actrec)); //REMOVE SYSTEM.OUT.PRINTLN
+    public int FunctionCall.eval(ActivationRecord actrec){
+        if (getIdUse().getID().equals("print")){
+            for (Expr expr : getExprList()){
+                System.out.println(expr.eval(actrec));
+            }
         }
+
+        if (getIdUse().getID().equals("read")){
+            Scanner scanner = new Scanner(System.in);
+
+            int value = 0;
+
+            while (scanner.hasNext()){
+                value = scanner.nextInt();
+            }
+
+            return value;
+        }
+
+        return 0;
+
     }
 
     /*---------------------------------Expr---------------------------------*/
