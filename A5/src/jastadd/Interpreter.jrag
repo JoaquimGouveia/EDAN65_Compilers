@@ -3,9 +3,32 @@ import java.util.Scanner;
 aspect Interpreter {
 
     class ActivationRecord {
+        private Map<String, Integer> variables;
+        
         public ActivationRecord() {
-
+            variables = new Map<String, Integer>();
         }
+        
+            private void put(String name, int value){
+                variables.put(name, value);
+            }
+
+            private int get(String name){
+                if (variables.containsKey(name)){
+                    int value = variables.get(name);
+
+                    if (value != null){
+                        return value;
+                    } else {
+                        throw new RuntimeException("Varible is not defined");
+                    }
+                   
+                } else {
+                    throw new RuntimeException("Variable is not declared");
+                }
+            
+
+        } 
     }
 
     public void Program.eval() {
@@ -33,8 +56,31 @@ aspect Interpreter {
     }
 
     public void VarDeclStmt.eval(ActivationRecord actrec){
-        System.out.println(getExpr().eval(actrec)); //REMOVE SYSTEM.OUT.PRINTLN
+        String name = getIdDecl().getID();
+
+        int value = null;
+
+        if (hasExpr()){
+            int value = getExpr().eval(actrec);
+        } 
+
+        variables.put(name, value);
+
     }
+
+    public void VarAssignStmt.eval(ActivationRecord actrec){
+        String name = getIdUse().getID();
+
+        if (variables.contains(name)){
+            int value = getExpression().eval(actrec); 
+
+            variables.put(name, value);
+        } else {
+            throw new RuntimeException("Variable is not declared");
+        }
+
+    }
+
 
     public void FunctionCallStmt.eval(ActivationRecord actrec){
         getFunctionCall().eval(actrec);
@@ -120,5 +166,9 @@ aspect Interpreter {
 
     public int Numeral.eval(ActivationRecord actrec) {
         return Integer.parseInt(getNUMERAL());
+    }
+
+    public int IdUse.eval(ActivationRecord actrec){
+        variables.get(getID());
     }
 }
