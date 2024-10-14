@@ -8,8 +8,10 @@ Program
     FuncDecl
       IdDecl ID="b"
       List
-        Param ID="c"
-        Param ID="d"
+        Param
+          IdDecl ID="c"
+        Param
+          IdDecl ID="d"
       Block
         List
     FuncDecl

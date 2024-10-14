@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.Map;
+import java.util.HashMap;
 
 aspect Interpreter {
 
@@ -6,33 +8,28 @@ aspect Interpreter {
         private Map<String, Integer> variables;
         
         public ActivationRecord() {
-            variables = new Map<String, Integer>();
+            variables = new HashMap<String, Integer>();
         }
         
-            private void put(String name, int value){
-                variables.put(name, value);
-            }
+        public void put(String name, int value){
+            variables.put(name, value);
+        }
 
-            private int get(String name){
-                if (variables.containsKey(name)){
-                    int value = variables.get(name);
-
-                    if (value != null){
-                        return value;
-                    } else {
-                        throw new RuntimeException("Varible is not defined");
-                    }
-                   
+        public int get(String name){
+            if (variables.containsKey(name)){
+                int value = variables.get(name);
+                if (value != null){
+                    return value;
                 } else {
-                    throw new RuntimeException("Variable is not declared");
+                    throw new RuntimeException("Varible is not defined");
                 }
-            
-
+            } else {
+                throw new RuntimeException("Variable is not declared");
+            }
         } 
     }
 
     public void Program.eval() {
-
         ActivationRecord actrec = new ActivationRecord();
         IdDecl main = unknownDecl();
         for (FuncDecl func : getFuncDecls()){
@@ -57,28 +54,24 @@ aspect Interpreter {
 
     public void VarDeclStmt.eval(ActivationRecord actrec){
         String name = getIdDecl().getID();
-
-        int value = null;
-
         if (hasExpr()){
-            int value = getExpr().eval(actrec);
-        } 
-
-        variables.put(name, value);
-
+            value = getExpr().eval(actrec);
+            actrec.put(name, value);
+        } else {
+            actrec.put(name, 0);
+        }
     }
 
     public void VarAssignStmt.eval(ActivationRecord actrec){
         String name = getIdUse().getID();
 
-        if (variables.contains(name)){
+        if (actrec.variables.contains(name)){
             int value = getExpression().eval(actrec); 
 
-            variables.put(name, value);
+            actrec.put(name, value);
         } else {
             throw new RuntimeException("Variable is not declared");
         }
-
     }
 
 
@@ -169,6 +162,6 @@ aspect Interpreter {
     }
 
     public int IdUse.eval(ActivationRecord actrec){
-        variables.get(getID());
+        actrec.get(getID());
     }
 }

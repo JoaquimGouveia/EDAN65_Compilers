@@ -16,7 +16,10 @@ public class Interpreter {
      * Entry point
      * @param args
      */
-    
+
+    public static Object CodeProber_parse(String[] args) throws Throwable {
+        return parse(args);
+    }
 
     public static Program parse(String[] args) throws IOException, beaver.Parser.Exception {
         String filename = args[args.length - 1]; // Assumes filename is the last argument
