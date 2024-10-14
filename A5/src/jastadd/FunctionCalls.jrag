@@ -1,0 +1,15 @@
+import java.util.*;
+
+aspect FunctionCalls {
+
+    coll Set<FuncDecl> FuncDecl.functionCalls() [new TreeSet<FuncDecl>()] with add root FuncDecl;
+
+    inh FuncDecl Stmt.enclosingFunction();
+
+    eq FuncDecl.getStmt(index i).enclosingFunction() = this;
+
+}
+
+aspect FunctionCallsContributions {
+
+}
