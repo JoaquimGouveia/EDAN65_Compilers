@@ -52,10 +52,7 @@ public class Interpreter {
                 }
                 System.exit(1);
             }
-            System.out.println(program.dumpTree());
-
             program.eval();
-            
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
             System.exit(1);

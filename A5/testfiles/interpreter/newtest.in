@@ -1,0 +1,14 @@
+int f(int x) {
+  print(1);
+  print(x);
+  print(3);
+  return x;
+}
+int main() {
+  while (f(2) < 3) {
+    print(4);
+    return 0;
+  }
+  print(5);
+  return 1;
+}

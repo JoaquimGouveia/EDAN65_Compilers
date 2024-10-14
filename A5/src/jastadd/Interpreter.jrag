@@ -62,7 +62,7 @@ aspect Interpreter {
         if (getIdDecl().getID().equals("print")){
             System.out.println(actrec.get("output"));
         } else if (getIdDecl().getID().equals("read")) {
-            Scanner scanner = new Scanner(System.in);
+            Scanner scanner = scanner();
             try {
                 int value = scanner.nextInt();
                 actrec.setReturnValue(value);
@@ -85,7 +85,6 @@ aspect Interpreter {
     }
 
     public void Stmt.eval(ActivationRecord actrec){
-        System.out.println("Stmt");
     }
 
     public void VarDeclStmt.eval(ActivationRecord actrec){
@@ -126,7 +125,7 @@ aspect Interpreter {
     }
 
     public void WhileStmt.eval(ActivationRecord actrec){
-        while (getExpr().eval(actrec) == 1){
+        while (getExpr().eval(actrec)== 1 && !actrec.getShouldReturn()){
             getBlock().eval(actrec);
         } 
     }
@@ -147,7 +146,6 @@ aspect Interpreter {
     /*---------------------------------Expr---------------------------------*/
 
     public int Expr.eval(ActivationRecord actrec){
-        System.out.println("Expr");
         return 0; 
     }
 
