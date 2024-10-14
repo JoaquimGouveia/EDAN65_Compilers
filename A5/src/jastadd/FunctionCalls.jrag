@@ -7,6 +7,14 @@ aspect FunctionCalls {
     inh FuncDecl FunctionCall.enclosingFunction();
     eq FuncDecl.getChild().enclosingFunction() = this;
 
+    syn Set<FuncDecl> FuncDecl.reachable() circular [new HashSet<FuncDecl>()] {
+        Set<FuncDecl> functions = new HashSet<FuncDecl>(); 
+        for(FuncDecl f : functionCalls()) { 
+                functions.add(f); 
+                functions.addAll(f.reachable());
+        } 
+        return functions; 
+    }
 }
 
 aspect FunctionCallsContributions {
