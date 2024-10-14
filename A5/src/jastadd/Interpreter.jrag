@@ -16,17 +16,12 @@ aspect Interpreter {
         }
 
         public int get(String name){
-            if (variables.containsKey(name)){
-                int value = variables.get(name);
-                if (value != null){
-                    return value;
-                } else {
-                    throw new RuntimeException("Varible is not defined");
-                }
-            } else {
-                throw new RuntimeException("Variable is not declared");
-            }
+            return variables.get(name);
         } 
+
+        public boolean containsKey(String name){
+            return variables.containsKey(name);
+        }
     }
 
     public void Program.eval() {
@@ -55,7 +50,7 @@ aspect Interpreter {
     public void VarDeclStmt.eval(ActivationRecord actrec){
         String name = getIdDecl().getID();
         if (hasExpr()){
-            value = getExpr().eval(actrec);
+            int value = getExpr().eval(actrec);
             actrec.put(name, value);
         } else {
             actrec.put(name, 0);
@@ -63,11 +58,10 @@ aspect Interpreter {
     }
 
     public void VarAssignStmt.eval(ActivationRecord actrec){
-        String name = getIdUse().getID();
+        String name = getIdUse().decl().getID();
 
-        if (actrec.variables.contains(name)){
+        if (actrec.containsKey(name)){
             int value = getExpression().eval(actrec); 
-
             actrec.put(name, value);
         } else {
             throw new RuntimeException("Variable is not declared");
@@ -162,6 +156,6 @@ aspect Interpreter {
     }
 
     public int IdUse.eval(ActivationRecord actrec){
-        actrec.get(getID());
+        return actrec.get(decl().getID());
     }
 }
