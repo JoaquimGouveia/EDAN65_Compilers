@@ -2,14 +2,14 @@ import java.util.*;
 
 aspect FunctionCalls {
 
-    coll Set<FuncDecl> FuncDecl.functionCalls() [new TreeSet<FuncDecl>()] with add root FuncDecl;
+    coll Set<FuncDecl> FuncDecl.functionCalls() [new HashSet<FuncDecl>()] with add root FuncDecl;
 
-    inh FuncDecl Stmt.enclosingFunction();
-
-    eq FuncDecl.getStmt(index i).enclosingFunction() = this;
+    inh FuncDecl FunctionCall.enclosingFunction();
+    eq FuncDecl.getChild().enclosingFunction() = this;
 
 }
 
 aspect FunctionCallsContributions {
-
+    FunctionCall contributes getIdUse().decl().function()
+        to FuncDecl.functionCalls() for enclosingFunction();
 }

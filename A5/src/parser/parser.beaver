@@ -102,7 +102,7 @@ var_decl_stmt = INT id_decl.b SEMICOLON {: return new VarDeclStmt(b, new Opt());
 
 var_assign_stmt = id_use.a ASSIGN expr.b SEMICOLON {: return new VarAssignStmt(a, b); :};
 
-func_call_stmt = expr.a SEMICOLON {: return new FunctionCallStmt(a); :};
+func_call_stmt = func_call.a SEMICOLON {: return new FunctionCallStmt(a); :};
 
 
 expr = arithmetic_expr.a EQ arithmetic_expr.b {: return new Eq(a, b); :}
