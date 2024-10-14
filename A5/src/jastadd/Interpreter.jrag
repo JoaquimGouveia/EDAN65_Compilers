@@ -37,9 +37,19 @@ aspect Interpreter {
     }
 
     public int FuncDecl.eval(ActivationRecord actrec){
-        for (Stmt stmt : getBlock().getStmtList()) {
-            stmt.eval(actrec);
-        } 
+        // print
+        if (getIdDecl().getID().equals("print")){
+            System.out.println(actrec.get("output"));
+        } else if (getIdDecl().getID().equals("read")) {
+            Scanner scanner = new Scanner(System.in);
+            while (scanner.hasNext()){
+                int value = scanner.nextInt();
+            }
+        } else {
+            for (Stmt stmt : getBlock().getStmtList()) {
+                stmt.eval(actrec);
+            }
+        }
         return 1;
     }
 
@@ -74,26 +84,13 @@ aspect Interpreter {
     }
 
     public int FunctionCall.eval(ActivationRecord actrec){
-        if (getIdUse().getID().equals("print")){
-            for (Expr expr : getExprList()){
-                System.out.println(expr.eval(actrec));
-            }
+        // other functions
+        ActivationRecord newActrec = new ActivationRecord();
+        FuncDecl func = getIdUse().function(); // Get the function declaration
+        for (int i = 0; i < func.getNumParam(); i++){
+            newActrec.put(func.getParam(i).getIdDecl().getID(), getExpr(i).eval(actrec));
         }
-
-        if (getIdUse().getID().equals("read")){
-            Scanner scanner = new Scanner(System.in);
-
-            int value = 0;
-
-            while (scanner.hasNext()){
-                value = scanner.nextInt();
-            }
-
-            return value;
-        }
-
-        return 0;
-
+        return func.eval(newActrec);
     }
 
     /*---------------------------------Expr---------------------------------*/

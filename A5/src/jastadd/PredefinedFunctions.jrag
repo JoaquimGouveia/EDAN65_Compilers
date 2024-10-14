@@ -3,7 +3,7 @@ aspect predefinedFunctions {
         List<FuncDecl> list = new List<FuncDecl>();
         // Create objects of type FunctionDecl and add them to the list
         FuncDecl read = new FuncDecl(new IdDecl("read"), new List(), new Block(new List()));
-        FuncDecl print = new FuncDecl(new IdDecl("print"), new List(new IdDecl("output")), new Block(new List()));
+        FuncDecl print = new FuncDecl(new IdDecl("print"), new List(new Param(new IdDecl("output"))), new Block(new List()));
         list.add(read);
         list.add(print);
         return list;
