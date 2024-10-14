@@ -6,11 +6,31 @@ aspect Interpreter {
 
     class ActivationRecord {
         private Map<String, Integer> variables;
+        private int returnValue;
+        private boolean shouldReturn;
         
         public ActivationRecord() {
             variables = new HashMap<String, Integer>();
+            returnValue = 0;
+            shouldReturn = false;
         }
         
+        public int getReturnValue(){
+            return returnValue;
+        }
+
+        public void setReturnValue(int i){
+            returnValue = i;
+        }
+
+        public boolean setShouldReturn(){
+            return shouldReturn;
+        }
+
+        public void setReturn(boolean b){
+            shouldReturn = b; 
+        }
+
         public void put(String name, int value){
             variables.put(name, value);
         }
@@ -112,6 +132,11 @@ aspect Interpreter {
                 stmt.eval(actrec);
             }
         }
+    }
+
+    public void ReturnStmt.eval(ActivationRecord actrec) {
+        actrec.setShouldReturn(true);
+        actrec.setReturnValue(getExpr().eval(actrec));
     }
 
     /*---------------------------------Expr---------------------------------*/
