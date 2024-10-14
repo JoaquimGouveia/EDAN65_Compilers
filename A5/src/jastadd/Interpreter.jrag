@@ -13,6 +13,7 @@ aspect Interpreter {
             variables = new HashMap<String, Integer>();
             returnValue = 0;
             shouldReturn = false;
+            
         }
         
         public int getReturnValue(){
