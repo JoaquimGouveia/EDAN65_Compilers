@@ -24,12 +24,12 @@ aspect Interpreter {
             returnValue = i;
         }
 
-        public boolean setShouldReturn(){
-            return shouldReturn;
+        public void setShouldReturn(boolean b){
+            shouldReturn = b;
         }
 
-        public void setReturn(boolean b){
-            shouldReturn = b; 
+        public boolean getShouldReturn(){
+            return shouldReturn;
         }
 
         public void put(String name, int value){
@@ -57,7 +57,7 @@ aspect Interpreter {
         if (main.isUnknown()) throw new RuntimeException();
     }
 
-    public int FuncDecl.eval(ActivationRecord actrec){
+    public void FuncDecl.eval(ActivationRecord actrec){
         // print
         if (getIdDecl().getID().equals("print")){
             System.out.println(actrec.get("output"));
@@ -67,11 +67,17 @@ aspect Interpreter {
                 int value = scanner.nextInt();
             }
         } else {
-            for (Stmt stmt : getBlock().getStmtList()) {
-                stmt.eval(actrec);
+            getBlock().eval(actrec);
+        }
+    }
+
+    public void Block.eval(ActivationRecord actrec){
+        for (Stmt stmt : getStmtList()){
+            stmt.eval(actrec);
+            if (actrec.getShouldReturn()) {
+                break;
             }
         }
-        return 1;
     }
 
     public void Stmt.eval(ActivationRecord actrec){
@@ -111,27 +117,21 @@ aspect Interpreter {
         for (int i = 0; i < func.getNumParam(); i++){
             newActrec.put(func.getParam(i).getIdDecl().getID(), getExpr(i).eval(actrec));
         }
-        return func.eval(newActrec);
+        func.eval(newActrec);
+        return newActrec.getReturnValue();
     }
 
     public void WhileStmt.eval(ActivationRecord actrec){
         while (getExpr().eval(actrec) == 1){
-            for (Stmt stmt : getBlock().getStmtList()){
-                stmt.eval(actrec);
-            }
-        }
-        
+            getBlock().eval(actrec);
+        } 
     }
 
     public void IfStmt.eval(ActivationRecord actrec){
         if (getExpr().eval(actrec) == 1){
-            for (Stmt stmt : getThenBlock().getStmtList()){
-                stmt.eval(actrec);
-            }
+            getThenBlock().eval(actrec);
         } else if (hasElseBlock()){
-            for (Stmt stmt : getElseBlock().getStmtList()) {
-                stmt.eval(actrec);
-            }
+            getElseBlock().eval(actrec);
         }
     }
 
