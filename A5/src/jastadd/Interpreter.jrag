@@ -62,9 +62,13 @@ aspect Interpreter {
         if (getIdDecl().getID().equals("print")){
             System.out.println(actrec.get("output"));
         } else if (getIdDecl().getID().equals("read")) {
-            Scanner scanner = scanner();
-            while (scanner.hasNext()){
+            Scanner scanner = new Scanner(System.in);
+            try {
                 int value = scanner.nextInt();
+                actrec.setReturnValue(value);
+                actrec.setShouldReturn(true);
+            } catch (Exception e){
+                throw new RuntimeException("Must be integer, got: " + value);
             }
         } else {
             getBlock().eval(actrec);
