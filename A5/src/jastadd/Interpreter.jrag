@@ -93,11 +93,32 @@ aspect Interpreter {
         return func.eval(newActrec);
     }
 
+    public void WhileStmt.eval(ActivationRecord actrec){
+        while (getExpr().eval(actrec) == 1){
+            for (Stmt stmt : getBlock().getStmtList()){
+                stmt.eval(actrec);
+            }
+        }
+        
+    }
+
+    public void IfStmt.eval(ActivationRecord actrec){
+        if (getExpr().eval(actrec) == 1){
+            for (Stmt stmt : getThenBlock().getStmtList()){
+                stmt.eval(actrec);
+            }
+        } else if (hasElseBlock()){
+            for (Stmt stmt : getElseBlock().getStmtList()) {
+                stmt.eval(actrec);
+            }
+        }
+    }
+
     /*---------------------------------Expr---------------------------------*/
 
     public int Expr.eval(ActivationRecord actrec){
         System.out.println("Expr");
-        throw new RuntimeException();
+        return 0; 
     }
 
     public int Add.eval(ActivationRecord actrec) {
