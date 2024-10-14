@@ -62,7 +62,7 @@ aspect Interpreter {
         if (getIdDecl().getID().equals("print")){
             System.out.println(actrec.get("output"));
         } else if (getIdDecl().getID().equals("read")) {
-            Scanner scanner = new Scanner(System.in);
+            Scanner scanner = scanner();
             while (scanner.hasNext()){
                 int value = scanner.nextInt();
             }
@@ -85,7 +85,7 @@ aspect Interpreter {
     }
 
     public void VarDeclStmt.eval(ActivationRecord actrec){
-        String name = getIdDecl().getID();
+        String name = getIdDecl().uniqueName();
         if (hasExpr()){
             int value = getExpr().eval(actrec);
             actrec.put(name, value);
@@ -95,7 +95,7 @@ aspect Interpreter {
     }
 
     public void VarAssignStmt.eval(ActivationRecord actrec){
-        String name = getIdUse().decl().getID();
+        String name = getIdUse().decl().uniqueName();
 
         if (actrec.containsKey(name)){
             int value = getExpression().eval(actrec); 
@@ -200,6 +200,26 @@ aspect Interpreter {
     }
 
     public int IdUse.eval(ActivationRecord actrec){
-        return actrec.get(decl().getID());
+        return actrec.get(decl().uniqueName());
     }
+
+    /*---------------------------------UniqueName---------------------------------*/
+    syn String IdDecl.uniqueName() = lookupUniqueName() + getID();
+    inh String IdDecl.lookupUniqueName();
+
+    inh String Block.lookupUniqueName();
+    eq Block.getStmt(int index).lookupUniqueName() {
+        return lookupUniqueName() + Integer.toString(index) + '_';
+    }
+
+    eq Program.getChild().lookupUniqueName() = "";
+    eq FuncDecl.getBlock().lookupUniqueName() = "";
+
+
+    /*----------------------------------Scanner------------------------------------*/
+    // Root attribute pattern
+    syn Scanner Program.scanner() = new Scanner(System.in);
+    inh Scanner ASTNode.scanner();
+    eq Program.getChild().scanner() = scanner();
+    
 }
