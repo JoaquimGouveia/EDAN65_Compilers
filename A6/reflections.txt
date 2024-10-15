@@ -1,0 +1,21 @@
+Exercise 3
+Program 1:
+Source code:
+int main() {
+    return 1;
+}
+Assembly code:
+main:
+    # Setup the stack frame
+    pushq %rbp  # Save old base pointer (stack fram for main)
+    movq %rsp, %rbp   # Set the new base pointer (current function's stack frame)
+
+    # Function body of main
+    movq $1, %rax # Place return value(1) in %rax
+
+    # Teardown the stack frame
+    movq %rbp, %rsp  # Restore stack pointer (teardown stack frame)
+    popq %rbp  # Restore old base pointer
+
+    # Exit the program using the system call for Exit
+    
