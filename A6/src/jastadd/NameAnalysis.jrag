@@ -1,0 +1,112 @@
+aspect NameAnalysis {
+    
+    // Introduce an attribute decl() in the IdUse class which refers to the appropriate IdDecl node. 
+    syn IdDecl IdUse.decl() = lookup(getID());
+    // Introduce an inherited attribute lookup(String name) in the IdUse class. It can be seen as a helper attribute to compute our decl().  
+    inh IdDecl IdUse.lookup(String name);
+
+    // Easiest way to understand equation for inherited attribute is: "This is the value I want to give to my children."
+    eq Program.getFuncDecl(int index).lookup(String name)  {
+        for (FuncDecl f : getFuncDeclList()) {
+            if (f.getIdDecl().getID().equals(name)) {
+                return f.getIdDecl();
+            }
+        }
+        for (FuncDecl f : predefinedFunctions()) {
+            if (f.getIdDecl().getID().equals(name)) {
+                return f.getIdDecl();
+            }
+        }
+        return unknownDecl();
+    }
+
+
+    /*-------------------------------FuncDecl-----------------------------*/
+    inh IdDecl FuncDecl.lookup(String name);
+    eq FuncDecl.getBlock().lookup(String name) {
+        IdDecl decl = localLookup(name);
+        return !decl.isUnknown() ? decl : lookup(name);
+    }
+
+    eq FuncDecl.getParam(int index).lookup(String name) {
+        IdDecl decl = localLookup(name);
+        return decl.getID().equals(name) ? decl : unknownDecl();
+    }
+
+    // Introduce this localLookup to find variable declarations in method parameters
+    syn IdDecl FuncDecl.localLookup(String name) {
+        IdDecl decl;
+        for(Param p : getParamList()) {
+            decl = p.getIdDecl();
+            if (decl.getID().equals(name)) {
+                return decl;
+            }
+        }
+        return unknownDecl();
+    }
+
+    inh FuncDecl IdDecl.function();
+    eq FuncDecl.getIdDecl().function() = this;
+
+    syn FuncDecl IdUse.function() = decl().function();
+
+
+
+    /*-------------------------------FuncCall-----------------------------*/
+
+    syn boolean FunctionCall.isSameNumber() = getIdUse().function().getNumParam() == getNumExpr();
+
+    /*-------------------------------BLOCK-----------------------------*/ 
+    inh IdDecl Block.lookup(String name);
+    eq Block.getStmt(int index).lookup(String name) {
+        IdDecl decl = localLookup(name, index);
+        return !decl.isUnknown() ? decl : lookup(name);
+    }
+
+    // Introduce a localLookup for declaration-before-use implementation
+    syn IdDecl Block.localLookup(String name, int until) {
+        for (int index = 0; index <= until; index++) {
+            IdDecl decl = getStmt(index).localLookup(name); // Checks if the name is declared in a statement preceding the current statement
+            if (!decl.isUnknown()) {
+                return decl;
+            }
+        }
+        return unknownDecl();
+    }
+
+    /*-------------------------------Statement-----------------------------*/
+    // If we find a Statement which is not either a VariableDecl (or a Block) we return unknownDecl()
+    syn IdDecl Stmt.localLookup(String name) = unknownDecl();
+    eq VarDeclStmt.localLookup(String name) = getIdDecl().getID().equals(name) ? getIdDecl() : unknownDecl();
+
+
+    /*-------------------------------Identify same name declarations-----------------------------*/
+    // Introduce an inherited attribute lookup(String name) in the IdDecl class.
+    inh IdDecl IdDecl.lookup(String name);
+    syn boolean IdDecl.isMultiDeclared() = lookup(getID()) != this;
+
+    /*--------------------------------Identify if IdDecl is variable or function---------------------------------------*/
+
+    inh boolean IdDecl.isFunction();
+    inh boolean IdDecl.isVariable();
+
+    eq FuncDecl.getIdDecl().isFunction() = true;
+    eq FuncDecl.getIdDecl().isVariable() = false;
+    eq VarDeclStmt.getIdDecl().isVariable() = true;
+    eq VarDeclStmt.getIdDecl().isFunction() = false;
+    eq Param.getIdDecl().isFunction() = false;
+    eq Param.getIdDecl().isVariable() = true;
+    eq Program.unknownDecl().isFunction() = false;
+    eq Program.unknownDecl().isVariable() = false;
+}
+
+/*aspect CircularDefinitions {
+    // Identify circular definitions in variable assignments
+    syn boolean IdUse.isCircular() = inExprOf(decl());
+    inh boolean IdUse.inExprOf(IdDecl decl);
+    inh boolean VarDeclStmt.inExprOf(IdDecl decl);
+    eq VarDeclStmt.getExpr().inExprOf(IdDecl decl) 
+         = getIdDecl() == decl || inExprOf(decl);
+    inh boolean VarAssignStmt.inExprOf(IdDecl decl);
+    eq Program.getChild().inExprOf(IdDecl decl) = false;
+}*/

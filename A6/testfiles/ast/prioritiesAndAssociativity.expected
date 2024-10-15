@@ -1,0 +1,111 @@
+Program
+  List
+    FuncDecl
+      IdDecl ID="a"
+      List
+      Block
+        List
+          VarDeclStmt
+            IdDecl ID="x"
+            Opt
+              Add
+                Mul
+                  Numeral NUMERAL="5"
+                  Numeral NUMERAL="3"
+                Numeral NUMERAL="2"
+          VarDeclStmt
+            IdDecl ID="z"
+            Opt
+              Sub
+                Numeral NUMERAL="10"
+                Div
+                  Numeral NUMERAL="6"
+                  Numeral NUMERAL="2"
+          VarDeclStmt
+            IdDecl ID="a"
+            Opt
+              Mul
+                Add
+                  Numeral NUMERAL="2"
+                  Numeral NUMERAL="3"
+                Numeral NUMERAL="4"
+          VarDeclStmt
+            IdDecl ID="b"
+            Opt
+              Sub
+                Sub
+                  Numeral NUMERAL="8"
+                  Numeral NUMERAL="3"
+                Numeral NUMERAL="2"
+          VarDeclStmt
+            IdDecl ID="c"
+            Opt
+              Mul
+                Mul
+                  Numeral NUMERAL="2"
+                  Numeral NUMERAL="3"
+                Numeral NUMERAL="4"
+          VarDeclStmt
+            IdDecl ID="d"
+            Opt
+              Add
+                Sub
+                  Add
+                    Numeral NUMERAL="5"
+                    Numeral NUMERAL="6"
+                  Numeral NUMERAL="2"
+                Numeral NUMERAL="1"
+          VarDeclStmt
+            IdDecl ID="e"
+            Opt
+              Mul
+                Div
+                  Numeral NUMERAL="10"
+                  Numeral NUMERAL="2"
+                Numeral NUMERAL="3"
+          VarDeclStmt
+            IdDecl ID="f"
+            Opt
+              Mul
+                Add
+                  Numeral NUMERAL="5"
+                  Numeral NUMERAL="2"
+                Sub
+                  Numeral NUMERAL="8"
+                  Numeral NUMERAL="3"
+          VarDeclStmt
+            IdDecl ID="g"
+            Opt
+              Sub
+                Mul
+                  Add
+                    Numeral NUMERAL="3"
+                    Numeral NUMERAL="2"
+                  Add
+                    Numeral NUMERAL="2"
+                    Numeral NUMERAL="3"
+                Numeral NUMERAL="5"
+          VarDeclStmt
+            IdDecl ID="h"
+            Opt
+              Add
+                Mod
+                  Numeral NUMERAL="10"
+                  Numeral NUMERAL="3"
+                Numeral NUMERAL="4"
+          VarDeclStmt
+            IdDecl ID="j"
+            Opt
+              Mul
+                Neg
+                  Numeral NUMERAL="5"
+                Numeral NUMERAL="3"
+          VarDeclStmt
+            IdDecl ID="k"
+            Opt
+              Mul
+                Neg
+                  Add
+                    Numeral NUMERAL="5"
+                    Numeral NUMERAL="3"
+                Numeral NUMERAL="2"
