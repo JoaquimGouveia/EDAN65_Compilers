@@ -1,3 +1,22 @@
+COMMON MISTAKES (look out for):
+
+• Not pushing function arguments in the correct order (from last to first).
+
+• Not popping function arguments after a function call has returned.
+
+• Not using small test programs. Small test programs are very useful because you are less likely to
+run into multiple code generation bugs in the same test. If you find that a large test is failing, try
+to break it up into smaller tests.
+
+• Not using CQO before IDIV. This causes overflows and incorrect results. May result in “Floating
+point exception” error messages.
+
+• Note that floating point exceptions can be caused by integer overflows and integer division by zero.
+Yes, it is confusing.
+
+
+
+
 Exercise 3
 Program 1:
 Source code:
@@ -19,3 +38,6 @@ main:
 
     # Exit the program using the system call for Exit
     
+
+
+
