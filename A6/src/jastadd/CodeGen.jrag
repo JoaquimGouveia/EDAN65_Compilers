@@ -141,9 +141,9 @@
       out.println("        pushq %rbp");
       out.println("        movq %rsp, %rbp");
 
-      for (Param param : Collections.reverse(getParams().clone())) {
-        param.genCode(out);
-      }
+      //for (Param param : Collections.reverse(getParams().clone())) {
+      //  param.genCode(out);
+      //}
       // Generate code for the function body
       getBlock().genCode(out);
   

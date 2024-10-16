@@ -26,7 +26,7 @@ int main() {
 Assembly code:
 main:
     # Setup the stack frame
-    pushq %rbp  # Save old base pointer (stack fram for main)
+    pushq %rbp  # Save old base pointer (stack frame for main)
     movq %rsp, %rbp   # Set the new base pointer (current function's stack frame)
 
     # Function body of main
@@ -36,8 +36,51 @@ main:
     movq %rbp, %rsp  # Restore stack pointer (teardown stack frame)
     popq %rbp  # Restore old base pointer
 
-    # Exit the program using the system call for Exit
+    # Exit the program using the system call for exit
+    movq $60, %rax           # System call number for exit
+    movq $0, %rdi            # Exit code (0)
+    syscall                  # Make the system call to exit
+
+Program 2:
+Source code: 
+int f() {
+    return 2;
+}
+int main() {
+    f();
+    return 1;
+}
+Assembly code:
+f:
+    # Setup the stack frame
+    pushq %rbp  # Save old base pointer (stack frame for main)
+    movq %rsp, %rbp   # Set the new base pointer (current function f's stack frame)
+
+    # Function body of f
+    movq $2, %rax    # Place return value(1) in %rax
+
+    # Teardown the stack frame
+    movq %rbp, %rsp     # Restore stack pointer
+    popq %rbp       # Restore old base pointer
+    ret
+
+main: 
+    # Setup the stack frame for main
+    pushq %rbp          # Save old base pointer (for main)
+    movq %rsp, %rbp     # Set new base pointer (stack frame for main)
     
+    # Call f()
+    call f              # Call function f (returns 2 in %rax)
 
+    # Function body of main
+    movq $1, %rax       # Return value of main is 1, placed in %rax
+    
+    # Teardown the stack frame for main
+    movq %rbp, %rsp     # Restore the stack pointer
+    popq %rbp           # Restore old base pointer
 
+    # Exit the program using the exit system call
+    movq $60, %rax      # System call number for exit
+    movq $0, %rdi       # Exit code (0)
+    syscall             # Make the system call to exit the program
 
