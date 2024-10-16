@@ -165,6 +165,14 @@
     }
 
     public void FunctionCall.genCode(PrintStream out) {
+      for (int i = getNumExpr() - 1; i >= 0; i--) {
+        getExpr(i).genCode(out);
+        out.println("        pushq %rax");
+      }
       out.println("        call " + getIdUse().getID());
+    }
+
+    public void Expr.genCode(PrintStream out) {
+      out.println("        movq $2, %rax");
     }
   }
