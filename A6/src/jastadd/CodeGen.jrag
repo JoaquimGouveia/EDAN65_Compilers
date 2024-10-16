@@ -165,6 +165,6 @@
     }
 
     public void FunctionCall.genCode(PrintStream out) {
-      out.println("        call " + getIdUse().getID()) 
+      out.println("        call " + getIdUse().getID());
     }
   }
