@@ -226,5 +226,4 @@ aspect Interpreter {
     syn Scanner Program.scanner() = new Scanner(System.in);
     inh Scanner ASTNode.scanner();
     eq Program.getChild().scanner() = scanner();
-    
 }

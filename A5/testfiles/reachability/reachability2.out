@@ -1,12 +1,10 @@
 Function: main
-print
 f
 ---------------
 Function: f
-g
 ---------------
 Function: g
-h
 ---------------
 Function: h
+f
 ---------------

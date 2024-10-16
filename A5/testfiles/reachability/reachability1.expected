@@ -1,8 +1,11 @@
 Function: main
-print
+h
 f
+g
+print
 ---------------
 Function: f
+h
 g
 ---------------
 Function: g

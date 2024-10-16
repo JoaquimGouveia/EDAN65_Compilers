@@ -1,0 +1,15 @@
+int main() {
+    return f();
+}
+
+int f() {
+    return 2;
+}
+
+int g() {
+    return 3;
+}
+
+int h() {
+    return f();
+}
