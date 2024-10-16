@@ -343,32 +343,32 @@
 
     public void Eq.genConditionJump(PrintStream out, String target) {
       genEval(out);
-      out.println("        je " + target);
+      out.println("        jne " + target);
     }
 
     public void Neq.genConditionJump(PrintStream out, String target) {
       genEval(out);
-      out.println("        jne " + target);
+      out.println("        je " + target);
     }
 
     public void Lt.genConditionJump(PrintStream out, String target) {
       genEval(out);
-      out.println("        jl " + target);
+      out.println("        jge " + target);
     }
 
     public void Gt.genConditionJump(PrintStream out, String target) {
       genEval(out);
-      out.println("        jg " + target);
+      out.println("        jle " + target);
     }
 
     public void Le.genConditionJump(PrintStream out, String target) {
       genEval(out);
-      out.println("        jle " + target);
+      out.println("        jg " + target);
     }
 
     public void Ge.genConditionJump(PrintStream out, String target) {
       genEval(out);
-      out.println("        jge " + target);
+      out.println("        jl " + target);
     }
 
     inh String IfStmt.uniqueName();
