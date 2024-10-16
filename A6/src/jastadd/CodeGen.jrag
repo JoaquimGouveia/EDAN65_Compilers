@@ -168,6 +168,7 @@
 
     public void ReturnStmt.genCode(PrintStream out) {
       getExpr().genEval(out);
+      out.println("        movq %rbp, %rsp");
       out.println("        popq %rbp");
       out.println("        ret");
     }
@@ -188,7 +189,6 @@
       String whileStart = uniqueName() + "while_start"; //labels
       String whileEnd = uniqueName() + "while_end";
       out.println(whileStart + ":"); //start of while loop
-      getExpr().genEval(out); //evaluate the expression, compare the operands
       getExpr().genConditionJump(out, whileEnd); //if the condition is false, jump to the end of the loop
       getBlock().genCode(out); //else evaluate the block
       out.println("        jmp " + whileStart); //jump back to start
@@ -198,7 +198,6 @@
     public void IfStmt.genCode(PrintStream out) {
       String ifEnd = uniqueName() + "if_end";
       String ifThen = uniqueName() + "if_then";
-      getExpr().genEval(out);
       if (hasElseBlock()) {
         String ifElse = uniqueName() + "if_else";
         getExpr().genConditionJump(out, ifElse);
@@ -343,26 +342,32 @@
     }
 
     public void Eq.genConditionJump(PrintStream out, String target) {
+      genEval(out);
       out.println("        je " + target);
     }
 
     public void Neq.genConditionJump(PrintStream out, String target) {
+      genEval(out);
       out.println("        jne " + target);
     }
 
     public void Lt.genConditionJump(PrintStream out, String target) {
+      genEval(out);
       out.println("        jl " + target);
     }
 
     public void Gt.genConditionJump(PrintStream out, String target) {
+      genEval(out);
       out.println("        jg " + target);
     }
 
     public void Le.genConditionJump(PrintStream out, String target) {
+      genEval(out);
       out.println("        jle " + target);
     }
 
     public void Ge.genConditionJump(PrintStream out, String target) {
+      genEval(out);
       out.println("        jge " + target);
     }
 
