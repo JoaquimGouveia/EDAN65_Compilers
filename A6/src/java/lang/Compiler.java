@@ -10,7 +10,7 @@ import lang.ast.LangScanner;
 import lang.ast.ErrorMessage;
 
 
-public class Interpreter {
+public class Compiler {
 
     /**
      * Entry point
