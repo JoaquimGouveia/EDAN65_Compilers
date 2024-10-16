@@ -160,19 +160,45 @@
 
     public void Block.genCode(PrintStream out) {
       for (Stmt stmt : getStmts()) {
-  
+        stmt.genCode(out);
       }
+    }
+
+    abstract public void Stmt.genCode(PrintStream out);
+
+    public void ReturnStmt.genCode(PrintStream out) {
+
+    }
+
+    public void VarDeclStmt.genCode(PrintStream out) {
+
+    }
+
+    public void VarAssignStmt.genCode(PrintStream out) {
+
+    }
+
+    public void FunctionCallStmt.genCode(PrintStream out) {
+      getFunctionCall().genCode(out);
+    }
+
+    public void WhileStmt.genCode(PrintStream out) {
+
+    }
+
+    public void IfStmt.genCode(PrintStream out) {
+
     }
 
     public void FunctionCall.genCode(PrintStream out) {
       for (int i = getNumExpr() - 1; i >= 0; i--) {
-        getExpr(i).genCode(out);
+        getExpr(i).genEval(out);
         out.println("        pushq %rax");
       }
       out.println("        call " + getIdUse().getID());
     }
 
-    public void Expr.genCode(PrintStream out) {
+    public void Expr.genEval(PrintStream out) {
       out.println("        movq $2, %rax");
     }
   }
