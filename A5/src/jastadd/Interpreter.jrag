@@ -109,7 +109,6 @@ aspect Interpreter {
         }
     }
 
-
     public void FunctionCallStmt.eval(ActivationRecord actrec){
         getFunctionCall().eval(actrec);
     }
@@ -131,7 +130,7 @@ aspect Interpreter {
             if (actrec.getShouldReturn()){
                 return;
             }
-        } 
+        }
     }
 
     public void IfStmt.eval(ActivationRecord actrec){

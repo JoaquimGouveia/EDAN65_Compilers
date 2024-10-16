@@ -29,10 +29,12 @@ public class TestFunctionCalls {
         PrintStream out = System.out;
             Program program = (Program) Util.parse(new File(TEST_DIRECTORY, filename));
             StringBuilder sb = new StringBuilder();
-            for (FuncDecl f : program.getFuncDeclList()) {
+            for (FuncDecl f : program.getFuncDeclList()) { 
+                sb.append("Function: " + f.getIdDecl().getID() + "\n");
                 for (FuncDecl fd : f.functionCalls()){
                     sb.append(fd.getIdDecl().getID()).append("\n");
                 }
+                sb.append("---------------\n");
             }
                 String actual = sb.toString();
                 Util.compareOutput(actual,

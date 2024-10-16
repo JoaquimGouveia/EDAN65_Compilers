@@ -1,0 +1,16 @@
+int main(){
+    print(1);
+    return f();
+}
+
+int f() {
+    return g();
+}
+
+int g() {
+    return h();
+}
+
+int h() {
+    return 2;
+}
