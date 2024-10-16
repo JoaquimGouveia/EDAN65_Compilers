@@ -196,6 +196,7 @@
         out.println("        pushq %rax");
       }
       out.println("        call " + getIdUse().getID());
+      out.println("        addq $" + (8 * getNumExpr()) + ", %rsp"); // Clean up the stack
     }
 
     public void Expr.genEval(PrintStream out) {
