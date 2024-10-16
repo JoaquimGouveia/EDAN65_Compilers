@@ -185,6 +185,10 @@
       getFunctionCall().genEval(out);
     }
 
+
+    // Imagine that the condition is (a < b)
+    // if the condition is false, that is if a >= b, then we jump to the end of the loop
+    // Inverted conditions are used to avoid the jump instruction
     public void WhileStmt.genCode(PrintStream out) {
       String whileStart = uniqueName() + "while_start"; //labels
       String whileEnd = uniqueName() + "while_end";
@@ -374,4 +378,10 @@
     inh String Block.uniqueName();
     eq Block.getStmt(int i).uniqueName() = uniqueName() + "_" + i;
     eq FuncDecl.getBlock().uniqueName() = getIdDecl().getID();
+
+    inh int Param.index();
+    eq FuncDecl.getParam(int i).index() = i;
+
+    syn String Param.adress() = (8 * (index() + 2)) + "(%rbp)";
+    
   }
