@@ -5,11 +5,10 @@ int main(){
 }
 
 int f(int i){
-    print(i)
+    print(i);
     return 0;
 }
 
 int g(int i){
     return i;
-    return;
 }
