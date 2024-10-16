@@ -183,23 +183,35 @@
     }
 
     public void WhileStmt.genCode(PrintStream out) {
-      String whileStart = uniqueName() + "while_start:"; //labels
-      String whileEnd = uniqueName() + "while_end:";
-
-      out.println(whileStart);
-      getBlock().genCode(out);
-      
-      getExpr().genEval(out);
-      getExpr().genConditionJump(out, whileStart);
-
-
-
-
-
+      String whileStart = uniqueName() + "while_start"; //labels
+      String whileEnd = uniqueName() + "while_end";
+      out.println(whileStart + ":"); //start of while loop
+      getExpr().genEval(out); //evaluate the expression, compare the operands
+      getExpr().genConditionJump(out, whileEnd); //if the condition is false, jump to the end of the loop
+      getBlock().genCode(out); //else evaluate the block
+      out.println("        jmp " + whileStart); //jump back to start
+      out.println(whileEnd + ":"); //Done
     }
 
     public void IfStmt.genCode(PrintStream out) {
+      String ifEnd = uniqueName() + "if_end";
+      String ifThen = uniqueName() + "if_then";
+      getExpr().genEval(out);
+      if (hasElseBlock()) {
+        String ifElse = uniqueName() + "if_else";
+        getExpr().genConditionJump(out, ifElse);
+      } else {
+        getExpr().genConditionJump(out, ifEnd);
+      }
+      out.println(ifThen + ":");
+      getThenBlock().genCode(out);
+      out.println("        jmp " + ifEnd);
 
+      if (hasElseBlock()) {
+        out.println(ifElse + ":");
+        getElseBlock().genCode(out);
+      }
+      out.println(ifEnd + ":");
     }
 
     abstract public void Expr.genEval(PrintStream out);
