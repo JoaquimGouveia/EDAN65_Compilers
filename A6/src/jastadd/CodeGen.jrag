@@ -272,14 +272,6 @@
       out.println("        movq $" + getNUMERAL() + ", %rax");
     }
 
-
-
-
-
-
-
-
-
     public void FunctionCall.genEval(PrintStream out) {
       for (int i = getNumExpr() - 1; i >= 0; i--) {
         getExpr(i).genEval(out);
@@ -287,5 +279,29 @@
       }
       out.println("        call " + getIdUse().getID());
       out.println("        addq $" + (8 * getNumExpr()) + ", %rsp"); // Clean up the stack
+    }
+
+    public void Eq.genConditionJump(PrintStream out, String target) {
+      out.println("        je " + target);
+    }
+
+    public void Neq.genConditionJump(PrintStream out, String target) {
+      out.println("        jne " + target);
+    }
+
+    public void Lt.genConditionJump(PrintStream out, String target) {
+      out.println("        jl " + target);
+    }
+
+    public void Gt.genConditionJump(PrintStream out, String target) {
+      out.println("        jg " + target);
+    }
+
+    public void Le.genConditionJump(PrintStream out, String target) {
+      out.println("        jle " + target);
+    }
+
+    public void Ge.genConditionJump(PrintStream out, String target) {
+      out.println("        jge " + target);
     }
   }
