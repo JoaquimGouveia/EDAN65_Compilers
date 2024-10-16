@@ -183,6 +183,18 @@
     }
 
     public void WhileStmt.genCode(PrintStream out) {
+      String whileStart = uniqueName() + "while_start:"; //labels
+      String whileEnd = uniqueName() + "while_end:";
+
+      out.println(whileStart);
+      getBlock().genCode(out);
+      
+      getExpr().genEval(out);
+      getExpr().genConditionJump(out, whileStart);
+
+
+
+
 
     }
 
@@ -246,27 +258,61 @@
     }
 
     public void Eq.genEval(PrintStream out) {
+      getLeft().genEval(out);
+      out.println("        pushq %rax");
+      getRight().genEval(out);
+      out.println("        movq %rax, %rbx");
+      out.println("        popq %rax");
+      out.println("        cmpq %rbx, %rax");
     }
 
     public void Neq.genEval(PrintStream out) {
+      getLeft().genEval(out);
+      out.println("        pushq %rax");
+      getRight().genEval(out);
+      out.println("        movq %rax, %rbx");
+      out.println("        popq %rax");
+      out.println("        cmpq %rbx, %rax");
     }
 
     public void Lt.genEval(PrintStream out) {
+      getLeft().genEval(out);
+      out.println("        pushq %rax");
+      getRight().genEval(out);
+      out.println("        movq %rax, %rbx");
+      out.println("        popq %rax");
+      out.println("        cmpq %rbx, %rax");
     }
 
     public void Gt.genEval(PrintStream out) {
+      getLeft().genEval(out);
+      out.println("        pushq %rax");
+      getRight().genEval(out);
+      out.println("        movq %rax, %rbx");
+      out.println("        popq %rax");
+      out.println("        cmpq %rbx, %rax");
     }
 
     public void Le.genEval(PrintStream out) {
+      getLeft().genEval(out);
+      out.println("        pushq %rax");
+      getRight().genEval(out);
+      out.println("        movq %rax, %rbx");
+      out.println("        popq %rax");
+      out.println("        cmpq %rbx, %rax");
     }
 
     public void Ge.genEval(PrintStream out) {
+      getLeft().genEval(out);
+      out.println("        pushq %rax");
+      getRight().genEval(out);
+      out.println("        movq %rax, %rbx");
+      out.println("        popq %rax");
+      out.println("        cmpq %rbx, %rax");
     }
 
     public void IdUse.genEval(PrintStream out) {
     }
-
-
 
     public void Numeral.genEval(PrintStream out) {
       out.println("        movq $" + getNUMERAL() + ", %rax");
@@ -279,6 +325,9 @@
       }
       out.println("        call " + getIdUse().getID());
       out.println("        addq $" + (8 * getNumExpr()) + ", %rsp"); // Clean up the stack
+    }
+
+    public void Expr.genConditionJump(PrintStream out, String target) {
     }
 
     public void Eq.genConditionJump(PrintStream out, String target) {
@@ -304,4 +353,8 @@
     public void Ge.genConditionJump(PrintStream out, String target) {
       out.println("        jge " + target);
     }
+
+    inh String WhileStmt.uniqueName();
+    eq Block.getStmt(int i).uniqueName() = uniqueName() + "_" + i;
+    eq FuncDecl.uniqueName() = getIdDecl().getID();
   }
