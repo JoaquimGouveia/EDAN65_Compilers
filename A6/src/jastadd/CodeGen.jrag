@@ -373,15 +373,29 @@
       out.println("        jl " + target);
     }
 
+    //-------------------------------Unique names for whiles and ifs-----------------------------------------
     inh String IfStmt.uniqueName();
     inh String WhileStmt.uniqueName();
     inh String Block.uniqueName();
     eq Block.getStmt(int i).uniqueName() = uniqueName() + "_" + i;
     eq FuncDecl.getBlock().uniqueName() = getIdDecl().getID();
 
+    //-------------------------------Stack index for parameters-----------------------------------------
     inh int Param.index();
     eq FuncDecl.getParam(int i).index() = i;
 
     syn String Param.adress() = (8 * (index() + 2)) + "(%rbp)";
+
+
+    //-------------------------------Stack index for local variables-----------------------------------------
+    syn int ASTNode.localIndex() = prevNode().localIndex();
+    eq Program.localIndex() = 0;
+    eq FuncDecl.localIndex() = 0;
+    eq IdDecl.localIndex() = prevNode().localIndex() + 1;
+    inh ASTNode ASTNode.prevNode();
+    eq ASTNode.getChild(int i).prevNode() = prevNode(i);
+    syn ASTNode ASTNode.lastNode() = prevNode(getNumChild());
+    syn ASTNode ASTNode.prevNode(int i) = i>0 ? getChild(i-1).lastNode() : this;
+
     
   }
