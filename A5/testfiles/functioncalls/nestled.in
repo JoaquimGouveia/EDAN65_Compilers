@@ -1,0 +1,12 @@
+int main(){
+    print(f(g()));
+    return 0;
+}
+
+int f(int i){
+    return i;
+}
+
+int g(){
+    return 3;
+}
