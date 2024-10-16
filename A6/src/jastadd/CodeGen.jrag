@@ -190,16 +190,16 @@
 
     }
 
-    public void FunctionCall.genCode(PrintStream out) {
+    public void Expr.genEval(PrintStream out) {
+      out.println("        movq $2, %rax");
+    }
+
+    public void FunctionCall.genEval(PrintStream out) {
       for (int i = getNumExpr() - 1; i >= 0; i--) {
         getExpr(i).genEval(out);
         out.println("        pushq %rax");
       }
       out.println("        call " + getIdUse().getID());
       out.println("        addq $" + (8 * getNumExpr()) + ", %rsp"); // Clean up the stack
-    }
-
-    public void Expr.genEval(PrintStream out) {
-      out.println("        movq $2, %rax");
     }
   }
