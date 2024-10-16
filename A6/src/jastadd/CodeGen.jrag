@@ -2,6 +2,8 @@
  * Simple code generation for the Calc language (EDAN65 course labs).
  * @author Jesper Öqvist
  */
+ // java -jar compiler.jar myfile > x.s && as --gstabs x.s -o x.o && ld x.o && ./a.out
+
  aspect CodeGen {
 
     public void Program.genCode(PrintStream out) {
