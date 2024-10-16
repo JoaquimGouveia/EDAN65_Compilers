@@ -206,6 +206,7 @@
         getElseBlock().genCode(out);
       } else {
         getExpr().genConditionJump(out, ifEnd);
+        getThenBlock().genCode(out);
       }
       out.println(ifEnd + ":");
     }
