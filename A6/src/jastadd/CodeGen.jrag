@@ -174,11 +174,18 @@
     }
 
     public void VarDeclStmt.genCode(PrintStream out) {
-
+      if (hasExpr()) {
+        getExpr().genEval(out);
+        out.println("        movq %rax, " + getIdDecl().address());
+      } else {
+        out.println("        movq $0, %rax");
+        out.println("        movq %rax, " + getIdDecl().address());
+      }
     }
 
     public void VarAssignStmt.genCode(PrintStream out) {
-
+      getExpr().genEval(out);
+      out.println("        movq %rax, " + getIdUse().decl().address());
     }
 
     public void FunctionCallStmt.genCode(PrintStream out) {
@@ -325,6 +332,7 @@
     }
 
     public void IdUse.genEval(PrintStream out) {
+      out.println("        movq " + decl().address() + ", %rax");
     }
 
     public void Numeral.genEval(PrintStream out) {
@@ -381,11 +389,13 @@
     eq FuncDecl.getBlock().uniqueName() = getIdDecl().getID();
 
     //-------------------------------Stack index for parameters-----------------------------------------
-    inh int Param.index();
-    eq FuncDecl.getParam(int i).index() = i;
+    inh int IdDecl.parameterIndex();
+    eq FuncDecl.getParam(int i).parameterIndex() = i; // will need to add 2 to this index to get the correct address
+    eq Program.getChild().parameterIndex() = 0;
 
-    syn String Param.adress() = (8 * (index() + 2)) + "(%rbp)";
-
+    syn String IdDecl.address() {
+      isParam() ? 8*(parameterIndex() + 2) + "(%rbp)" : "-" + 8*(localIndex()) + "(%rbp)";
+    }
 
     //-------------------------------Stack index for local variables-----------------------------------------
     syn int ASTNode.localIndex() = prevNode().localIndex();
@@ -397,5 +407,12 @@
     syn ASTNode ASTNode.lastNode() = prevNode(getNumChild());
     syn ASTNode ASTNode.prevNode(int i) = i>0 ? getChild(i-1).lastNode() : this;
 
-    
+
+    // Local variable counting
+    syn int ASTNode.numLocals() = lastNode().localIndex() - localIndex();
+
+    //-------------------------------Check if IdDecl is a Param-----------------------------------------
+    inh boolean IdDecl.isParam();
+    eq Program.getChild().isParam() = false;
+    eq FuncDecl.getParam(int i).isParam() = true;
   }
