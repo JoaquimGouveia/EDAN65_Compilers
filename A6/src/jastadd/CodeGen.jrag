@@ -190,8 +190,7 @@
 
     }
 
-    abstract public void Expr.genEval(PrintStream out) {
-    }
+    abstract public void Expr.genEval(PrintStream out);
 
     public void Add.genEval(PrintStream out) {
       getLeft().genEval(out);
@@ -199,7 +198,7 @@
       getRight().genEval(out);
       out.println("        movq %rax, %rbx");
       out.println("        popq %rax");
-      out.println("        addq %rax, %rbx");
+      out.println("        addq %rbx, %rax");
     }
 
     public void Mul.genEval(PrintStream out) {
@@ -227,7 +226,7 @@
       getRight().genEval(out);
       out.println("        movq %rax, %rbx");
       out.println("        popq %rax");
-      out.println("        subq %rax, %rbx");
+      out.println("        subq %rbx, %rax");
     }
 
     public void Mod.genEval(PrintStream out) {
@@ -270,7 +269,7 @@
 
 
     public void Numeral.genEval(PrintStream out) {
-      out.println("        movq $" + getNumeral() + " %rax");
+      out.println("        movq $" + getNUMERAL() + ", %rax");
     }
 
 
