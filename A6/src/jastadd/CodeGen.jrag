@@ -167,7 +167,9 @@
     abstract public void Stmt.genCode(PrintStream out);
 
     public void ReturnStmt.genCode(PrintStream out) {
-
+      getExpr().genEval(out);
+      out.println("        popq %rbp");
+      out.println("        ret");
     }
 
     public void VarDeclStmt.genCode(PrintStream out) {
@@ -200,6 +202,8 @@
       if (hasElseBlock()) {
         String ifElse = uniqueName() + "if_else";
         getExpr().genConditionJump(out, ifElse);
+        out.println(ifElse + ":");
+        getElseBlock().genCode(out);
       } else {
         getExpr().genConditionJump(out, ifEnd);
       }
@@ -207,10 +211,6 @@
       getThenBlock().genCode(out);
       out.println("        jmp " + ifEnd);
 
-      if (hasElseBlock()) {
-        out.println(ifElse + ":");
-        getElseBlock().genCode(out);
-      }
       out.println(ifEnd + ":");
     }
 
@@ -366,7 +366,9 @@
       out.println("        jge " + target);
     }
 
+    inh String IfStmt.uniqueName();
     inh String WhileStmt.uniqueName();
+    inh String Block.uniqueName();
     eq Block.getStmt(int i).uniqueName() = uniqueName() + "_" + i;
-    eq FuncDecl.uniqueName() = getIdDecl().getID();
+    eq FuncDecl.getBlock().uniqueName() = getIdDecl().getID();
   }
