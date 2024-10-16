@@ -197,19 +197,16 @@
 
     public void IfStmt.genCode(PrintStream out) {
       String ifEnd = uniqueName() + "if_end";
-      String ifThen = uniqueName() + "if_then";
       if (hasElseBlock()) {
         String ifElse = uniqueName() + "if_else";
         getExpr().genConditionJump(out, ifElse);
-        out.println(ifElse + ":");
+        getThenBlock().genCode(out); // Did not jump so we can execute the Then Block
+        out.println("        jmp " + ifEnd); // After that we jump to ifEnd
+        out.println(ifElse + ":"); // Here we define the Else Block
         getElseBlock().genCode(out);
       } else {
         getExpr().genConditionJump(out, ifEnd);
       }
-      out.println(ifThen + ":");
-      getThenBlock().genCode(out);
-      out.println("        jmp " + ifEnd);
-
       out.println(ifEnd + ":");
     }
 

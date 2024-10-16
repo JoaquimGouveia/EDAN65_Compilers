@@ -4,6 +4,5 @@ int main(){
     } else {
         print(2);
     }
-    
     return 0;
 }
