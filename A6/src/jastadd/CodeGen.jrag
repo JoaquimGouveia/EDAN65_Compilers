@@ -394,7 +394,10 @@
     eq Program.getChild().parameterIndex() = 0;
 
     syn String IdDecl.address() {
-      isParam() ? 8*(parameterIndex() + 2) + "(%rbp)" : "-" + 8*(localIndex()) + "(%rbp)";
+      if (isParam()) {
+        return 8*(parameterIndex() + 2) + "(%rbp)";
+      } else {
+        return "-" + 8*(localIndex()) + "(%rbp)";
     }
 
     //-------------------------------Stack index for local variables-----------------------------------------
