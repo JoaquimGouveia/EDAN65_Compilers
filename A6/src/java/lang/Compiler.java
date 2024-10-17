@@ -52,7 +52,7 @@ public class Compiler {
                 }
                 System.exit(1);
             }
-            program.eval();
+            program.genCode(System.out);
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
             System.exit(1);

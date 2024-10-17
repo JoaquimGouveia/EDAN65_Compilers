@@ -20,7 +20,7 @@
       out.println("        call main");
   
       // Call sys_exit:
-      out.println("        movq $0, %rdi");
+      out.println("        movq %rax, %rdi");
       out.println("        movq $60, %rax");
       out.println("        syscall"); // Done!
   
@@ -142,6 +142,7 @@
       out.println(getIdDecl().getID() + ":");
       out.println("        pushq %rbp");
       out.println("        movq %rsp, %rbp");
+      out.println("        subq $" + (numLocals()*8) + ", %rsp");
 
       //for (Param param : Collections.reverse(getParams().clone())) {
       //  param.genCode(out);
@@ -168,6 +169,7 @@
 
     public void ReturnStmt.genCode(PrintStream out) {
       getExpr().genEval(out);
+      //Should remove the lcoal variables from the stack
       out.println("        movq %rbp, %rsp");
       out.println("        popq %rbp");
       out.println("        ret");
