@@ -398,6 +398,7 @@
         return 8*(parameterIndex() + 2) + "(%rbp)";
       } else {
         return "-" + 8*(localIndex()) + "(%rbp)";
+      }
     }
 
     //-------------------------------Stack index for local variables-----------------------------------------
