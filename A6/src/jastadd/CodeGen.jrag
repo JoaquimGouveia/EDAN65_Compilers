@@ -184,7 +184,7 @@
     }
 
     public void VarAssignStmt.genCode(PrintStream out) {
-      getExpr().genEval(out);
+      getExpression().genEval(out);
       out.println("        movq %rax, " + getIdUse().decl().address());
     }
 
